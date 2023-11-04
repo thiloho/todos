@@ -1,11 +1,15 @@
 <script>
+	import { page } from '$app/stores';
+    import { signOut } from "@auth/sveltekit/client";
 	import '../app.css';
 </script>
 
 <header class="bg-blue-900 text-white p-4">
 	<div class="max-w-screen-2xl ms-auto me-auto flex items-center gap-4">
 		<p>
-			<strong>Todos</strong>
+			<strong>
+				<a href="/">Todos</a>
+			</strong>
 		</p>
 		<button class="p-2 rounded border border-white bg-blue-950 hover:scale-105">
 			<svg
@@ -21,7 +25,27 @@
 				/>
 			</svg>
 		</button>
-        <a href="/log-in" class="ms-auto hover:underline">Log in</a>
+		{#if $page.data.session?.user}
+			<details class="ms-auto relative">
+				<summary
+					class="block cursor-pointer border-x-2 rounded-full border-transparent hover:border-white"
+				>
+					<img
+						src={$page.data.session?.user.image}
+						alt="User account avatar"
+						width="32"
+						height="32"
+						class="rounded-full"
+					/>
+				</summary>
+				<div class="absolute end-0 bg-white text-black top-10 border border-neutral-200 p-4 flex flex-col gap-4 rounded">
+					<p>Logged in as <strong>{$page.data.session?.user.email}</strong></p>
+                    <button on:click={signOut} class="ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 text-blue-900 hover:underline hover:text-blue-950">Log out</button>
+				</div>
+			</details>
+		{:else}
+			<a href="/log-in" class="ms-auto hover:underline">Log in</a>
+		{/if}
 	</div>
 </header>
 <main class="mt-12 mb-16 ps-4 pe-4">
