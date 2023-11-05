@@ -1,6 +1,4 @@
-<script>
-	import { page } from '$app/stores';
-    import { signOut } from "@auth/sveltekit/client";
+<script lang="ts">
 	import '../app.css';
 </script>
 
@@ -25,26 +23,10 @@
 				/>
 			</svg>
 		</button>
-		{#if $page.data.session?.user}
-			<details class="ms-auto relative">
-				<summary
-					class="block cursor-pointer border-x-2 rounded-full border-transparent hover:border-white"
-				>
-					<img
-						src={$page.data.session?.user.image}
-						alt="User account avatar"
-						width="32"
-						height="32"
-						class="rounded-full"
-					/>
-				</summary>
-				<div class="absolute end-0 bg-white text-black top-10 border border-neutral-200 p-4 flex flex-col gap-4 rounded">
-					<p>Logged in as <strong>{$page.data.session?.user.email}</strong></p>
-                    <button on:click={signOut} class="ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 text-blue-900 hover:underline hover:text-blue-950">Log out</button>
-				</div>
-			</details>
+		{#if 1 !== 1}
+			<a href="/account" class="ms-auto hover:underline">Account</a>
 		{:else}
-			<a href="/log-in" class="ms-auto hover:underline">Log in</a>
+			<a href="/login" class="ms-auto hover:underline">Log in</a>
 		{/if}
 	</div>
 </header>

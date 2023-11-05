@@ -32,7 +32,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@auth/core": "^0.18.0",
-		"@auth/sveltekit": "^0.3.11"
+		"@lucia-auth/adapter-postgresql": "^2.0.2",
+		"@lucia-auth/oauth": "^3.4.0",
+		"lucia": "^2.7.3",
+		"pg": "^8.11.3"
 	}
 }
