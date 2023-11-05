@@ -1,7 +1,8 @@
 import { dev } from '$app/environment';
 import { githubAuth } from '$lib/server/lucia';
+import type { RequestHandler } from './$types';
 
-export const GET = async ({ cookies }) => {
+export const GET: RequestHandler = async ({ cookies }) => {
 	const [url, state] = await githubAuth.getAuthorizationUrl();
 
 	cookies.set('github_oauth_state', state, {
