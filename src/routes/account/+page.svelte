@@ -10,7 +10,7 @@
 
 <ul>
 	<li>User id: <strong>{data.userId}</strong></li>
-	<li>GitHub username: <strong>{data.githubUsername}</strong></li>
+	<li>Username: <strong>{data.githubUsername}</strong></li>
 </ul>
 
 <form method="post" action="?/logout" use:enhance>
