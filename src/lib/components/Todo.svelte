@@ -29,7 +29,11 @@
 	<div
 		class="fixed end-0 top-0 border-s border-neutral-200 bg-white p-4 h-full w-[min(theme(width.64),theme(width.3/4))] flex flex-col gap-4 dark:bg-neutral-900 dark:border-neutral-800"
 	>
-		<button class="btn btn-icon self-end" on:click={() => (showSidebar = false)}>
+		<button
+			title="Close sidebar"
+			on:click={() => (showSidebar = false)}
+			class="btn btn-icon self-end"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 20 20"
