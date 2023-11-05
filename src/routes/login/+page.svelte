@@ -1,10 +1,12 @@
-<h1 class="text-2xl font-bold">Log in</h1>
-<div class="flex gap-2 items-start max-w-prose p-4 border border-blue-900">
+<h1>Log in</h1>
+<div
+	class="flex gap-2 items-start max-w-prose p-4 border border-blue-900 dark:border-blue-100 rounded"
+>
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 20 20"
 		fill="currentColor"
-		class="w-5 h-5 text-blue-900 shrink-0"
+		class="w-5 h-5 text-blue-900 shrink-0 dark:text-blue-100"
 	>
 		<path
 			fill-rule="evenodd"
@@ -19,14 +21,6 @@
 </div>
 
 <div class="flex gap-4">
-	<a
-		href="/login/github"
-		class="ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 text-blue-900 hover:underline hover:text-blue-950"
-		>Log in with GitHub</a
-	>
-	<a
-		href="/login/google"
-		class="ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 text-blue-900 hover:underline hover:text-blue-950"
-		>Log in with Google</a
-	>
+	<a href="/login/github" class="btn">Log in with GitHub</a>
+	<a href="/login/google" class="btn">Log in with Google</a>
 </div>

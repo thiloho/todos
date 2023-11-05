@@ -6,7 +6,7 @@
 	export let data: PageData;
 </script>
 
-<h1 class="text-2xl font-bold">Account</h1>
+<h1>Account</h1>
 
 <ul>
 	<li>User id: <strong>{data.userId}</strong></li>
@@ -14,9 +14,5 @@
 </ul>
 
 <form method="post" action="?/logout" use:enhance>
-	<button
-		type="submit"
-		class="ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 text-blue-900 hover:underline hover:text-blue-950"
-		>Log out</button
-	>
+	<button type="submit" class="btn">Log out</button>
 </form>

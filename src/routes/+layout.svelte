@@ -13,7 +13,7 @@
 				<a href="/">Todos</a>
 			</strong>
 		</p>
-		<button class="p-2 rounded border border-white bg-blue-950 hover:scale-105">
+		<button class="btn btn-icon bg-blue-950 border border-white">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 20 20"
@@ -39,7 +39,7 @@
 		<slot />
 	</div>
 </main>
-<footer class="p-4 border-t">
+<footer class="p-4 border-t border-neutral-200 dark:border-neutral-700">
 	<div class="max-w-screen-2xl ms-auto me-auto flex flex-col gap-4">
 		<p>
 			<small>Copyright © 2023 Thilo Hohlt.</small>

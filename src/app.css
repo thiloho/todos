@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	:root {
+		color-scheme: light dark;
+	}
+	h1 {
+		@apply text-2xl font-bold;
+	}
+	h2 {
+		@apply text-xl border-b border-neutral-200 pb-1 dark:border-neutral-700;
+	}
+}
+
+@layer components {
+	.btn {
+		@apply ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 hover:underline dark:bg-neutral-800 dark:border-neutral-700;
+	}
+	.btn-icon {
+		@apply p-2 no-underline hover:scale-105;
+	}
+	.input-common {
+		@apply ps-2 pe-2 py-1 bg-neutral-100 border border-neutral-200 rounded dark:bg-neutral-800 dark:border-neutral-700;
+	}
+	.input-text {
+		@apply bg-transparent;
+	}
+}
