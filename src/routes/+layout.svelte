@@ -1,5 +1,9 @@
 <script lang="ts">
 	import '../app.css';
+
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
 <header class="bg-blue-900 text-white p-4">
@@ -23,7 +27,7 @@
 				/>
 			</svg>
 		</button>
-		{#if 1 !== 1}
+		{#if data.session}
 			<a href="/account" class="ms-auto hover:underline">Account</a>
 		{:else}
 			<a href="/login" class="ms-auto hover:underline">Log in</a>

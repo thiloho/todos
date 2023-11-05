@@ -7,8 +7,10 @@ import postgres from 'pg';
 import { github } from '@lucia-auth/oauth/providers';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
 
-const pool = new postgres.Pool({
-	connectionString: 'postgres:///todos?host=/run/postgresql/'
+export const pool = new postgres.Pool({
+	host: '/run/postgresql',
+	user: 'postgres',
+	database: 'todos'
 });
 
 export const auth = lucia({
