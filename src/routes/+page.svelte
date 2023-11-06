@@ -5,7 +5,7 @@
 <h1>Tasks</h1>
 <section class="flex flex-col gap-4">
 	<h2>Create a new task</h2>
-	<form action="" class="flex items-end flex-wrap gap-4">
+	<form action="?/createTodo" method="post" class="flex items-end flex-wrap gap-4">
 		<div class="flex flex-col gap-1 flex-grow">
 			<label for="new-task-title">Task</label>
 			<input
