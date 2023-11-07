@@ -1,12 +1,12 @@
 <h1>Log in</h1>
 <div
-	class="flex gap-2 items-start max-w-prose p-4 border border-blue-900 dark:border-blue-100 rounded"
+	class="flex gap-2 items-start max-w-prose p-4 border border-blue-900 dark:border-blue-400 rounded"
 >
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 20 20"
 		fill="currentColor"
-		class="w-5 h-5 text-blue-900 shrink-0 dark:text-blue-100"
+		class="w-5 h-5 text-blue-900 shrink-0 dark:text-blue-400"
 	>
 		<path
 			fill-rule="evenodd"

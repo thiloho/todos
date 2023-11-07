@@ -14,5 +14,5 @@ export const GET: RequestHandler = async ({ locals }) => {
 
 	const res = await pool.query(text, values);
 
-	return json(res.rows);
+	return json(res.rows, { status: 226 });
 };
