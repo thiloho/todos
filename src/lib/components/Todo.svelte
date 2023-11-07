@@ -1,5 +1,7 @@
 <script lang="ts">
+	export let taskId: string;
 	export let title: string;
+	export let isCompleted = false;
 
 	let showSidebar = false;
 </script>
@@ -7,8 +9,8 @@
 <li
 	class="ps-4 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded flex gap-2 items-center dark:bg-neutral-800 dark:border-neutral-700"
 >
-	<input id="task-1" type="checkbox" class="scale-125" />
-	<label for="task-1">{title}</label>
+	<input id={taskId} type="checkbox" checked={isCompleted} class="scale-125" />
+	<label for={taskId}>{title}</label>
 	<button
 		title="Edit task"
 		class="btn btn-icon ms-auto bg-neutral-200 border-neutral-300 dark:bg-neutral-700 dark:border-neutral-600"

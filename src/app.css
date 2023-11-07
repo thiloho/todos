@@ -30,6 +30,6 @@
 		@apply ps-2 pe-2 py-1 bg-neutral-100 border border-neutral-200 rounded dark:bg-neutral-800 dark:border-neutral-700;
 	}
 	.input-text {
-		@apply bg-transparent;
+		@apply bg-transparent dark:bg-transparent;
 	}
 }
