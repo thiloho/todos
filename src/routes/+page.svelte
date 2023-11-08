@@ -9,7 +9,7 @@
 		const isCompleted = event.target.checked;
 
 		await fetch(`/api/todos/${id}`, {
-			method: 'PUT',
+			method: 'PATCH',
 			body: JSON.stringify({ isCompleted }),
 			headers: {
 				'Content-Type': 'application/json'
@@ -18,7 +18,7 @@
 	};
 
 	let isEditingItem = false;
-	let editingId: number, editingTitle: string, editingIsImportant: boolean, editingDueDate: string, originalEditingDueDate: Date;
+	let editingId: number, editingTitle: string, editingIsImportant: boolean, editingDueDate: string;
 
 	const handleTaskEditing = (id: number, title: string, is_important: boolean, due_date: Date) => {
 		isEditingItem = true;
@@ -26,9 +26,8 @@
 		editingId = id;
 		editingTitle = title;
 		editingIsImportant = is_important;
-		editingDueDate = due_date ? new Date(due_date).toISOString().split('T')[0] : "";
-		originalEditingDueDate = due_date;
-	}
+		editingDueDate = due_date ? new Date(due_date).toISOString().split('T')[0] : '';
+	};
 </script>
 
 <h1>Tasks</h1>
@@ -155,7 +154,11 @@
 			<div
 				class="fixed end-0 top-0 border-s border-neutral-200 bg-white p-4 h-full w-[min(theme(width.96),theme(width.3/4))] flex flex-col gap-4 dark:bg-neutral-900 dark:border-neutral-800"
 			>
-				<button title="Close sidebar" on:click={() => isEditingItem = false} class="btn btn-icon self-end">
+				<button
+					title="Close sidebar"
+					on:click={() => (isEditingItem = false)}
+					class="btn btn-icon self-end"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 20 20"
@@ -171,7 +174,11 @@
 				<form
 					action="?/updateTodo"
 					method="post"
-					use:enhance
+					use:enhance={() => {
+						return async ({ update }) => {
+							update({ reset: false });
+						};
+					}}
 					class="flex flex-col gap-4"
 				>
 					<div class="flex flex-col gap-1 flex-grow">

@@ -43,6 +43,24 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 
-		console.log(data);
+		const taskField = Array.from(data.keys()).find((key) => key.startsWith('edit-task-'));
+		const editingId = taskField?.split('-')[2];
+
+		const title = data.get(`edit-task-${editingId}-title`);
+		const dueDate = data.get(`edit-task-${editingId}-due-date`);
+		const isImportant = data.get(`edit-task-${editingId}-important-marker`);
+
+		const text = `
+			UPDATE user_todo
+			SET title = $1,
+				due_date = $2,
+				is_important = $3,
+				updated_at = CURRENT_TIMESTAMP
+			WHERE id = $4 AND user_id = $5
+		`;
+
+		const values = [title, dueDate || null, isImportant || false, editingId, session.user.userId];
+
+		await pool.query(text, values);
 	}
 };

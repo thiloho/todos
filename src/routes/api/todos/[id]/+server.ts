@@ -2,7 +2,7 @@ import { pool } from '$lib/server/lucia';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 
-export const PUT: RequestHandler = async ({ request, locals, params }) => {
+export const PATCH: RequestHandler = async ({ request, locals, params }) => {
 	const { isCompleted } = await request.json();
 	const session = await locals.auth.validate();
 
