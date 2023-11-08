@@ -1,12 +1,27 @@
 import type { Actions, PageServerLoad } from './$types';
 import { json } from '@sveltejs/kit';
 import { pool } from '$lib/server/lucia';
+import { generateFilterQuery, generateSortQuery } from '$lib/utilities';
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	const response = await fetch('/api/todos');
-	const todos = await response.json();
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth.validate();
 
-	return { todos };
+	const text = `
+		SELECT * FROM user_todo_organization
+		WHERE user_id = $1
+	`;
+
+	const values = [session?.user.userId];
+
+	const activeFilter = (await pool.query(text, values)).rows[0].filter;
+	const activeSort = (await pool.query(text, values)).rows[0].sort_by;
+
+	const filterQuery = generateFilterQuery(activeFilter);
+	const filterSortQuery = generateSortQuery(activeSort, filterQuery);
+
+	const todos = (await pool.query(filterSortQuery, [session?.user.userId])).rows;
+
+	return { todos, activeFilter, activeSort };
 };
 
 export const actions: Actions = {
@@ -34,7 +49,7 @@ export const actions: Actions = {
 
 		await pool.query(text, values);
 	},
-	filterTodos: async ({ locals, request }) => {
+	organizeTodos: async ({ locals, request }) => {
 		const session = await locals.auth.validate();
 
 		if (!session) {
@@ -44,45 +59,42 @@ export const actions: Actions = {
 		const data = await request.formData();
 
 		const activeFilter = data.get('task-list-filter');
+		const activeSort = data.get('task-list-sort');
 
-		let text: string;
+		const textFilter = `
+			INSERT INTO user_todo_organization (user_id, filter)
+			VALUES ($1, $2)
+			ON CONFLICT (user_id)
+			DO UPDATE SET filter = EXCLUDED.filter;
+		`;
+		const textSort = `
+			INSERT INTO user_todo_organization (user_id, sort_by)
+			VALUES ($1, $2)
+			ON CONFLICT (user_id)
+			DO UPDATE SET sort_by = EXCLUDED.sort_by;
+		`;
 
-		switch (activeFilter) {
-			case 'important':
-				text = `
-					SELECT * FROM user_todo
-					WHERE is_important = true AND user_id = $1
-					ORDER BY id DESC
-				`;
-				break;
-			case 'active':
-				text = `
-					SELECT * FROM user_todo
-					WHERE is_completed = false AND user_id = $1
-					ORDER BY id DESC
-				`;
-				break;
-			case 'completed':
-				text = `
-					SELECT * FROM user_todo
-					WHERE is_completed = true AND user_id = $1
-					ORDER BY id DESC
-				`;
-				break;
-			default:
-				text = `
-					SELECT * FROM user_todo
-					WHERE user_id = $1
-					ORDER BY id DESC
-				`;
-				break;
+		const valuesFilter = [session.user.userId, activeFilter];
+		const valuesSort = [session.user.userId, activeSort];
+
+		await pool.query(textFilter, valuesFilter);
+		await pool.query(textSort, valuesSort);
+	},
+	deleteCompletedTodos: async ({ locals }) => {
+		const session = await locals.auth.validate();
+
+		if (!session) {
+			return json({ message: 'Unauthorized' }, { status: 401 });
 		}
+
+		const text = `
+			DELETE FROM user_todo
+			WHERE user_id = $1 AND is_completed = true
+		`;
 
 		const values = [session.user.userId];
 
-		const res = await pool.query(text, values);
-
-		return { todos: res.rows };
+		await pool.query(text, values);
 	},
 	updateTodoCompletionState: async ({ locals, request }) => {
 		const session = await locals.auth.validate();

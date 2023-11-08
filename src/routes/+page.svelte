@@ -1,10 +1,8 @@
 <script lang="ts">
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
 
 	export let data: PageData;
-
-	export let form: ActionData;
 </script>
 
 <h1>Tasks</h1>
@@ -40,31 +38,53 @@
 </section>
 <section class="flex flex-col gap-4">
 	<h2>Task list</h2>
-	<form
-		method="post"
-		action="?/filterTodos"
-		use:enhance={() => {
-			return async ({ update }) => {
-				update({ reset: false });
-			};
-		}}
-		class="flex items-end gap-2"
-	>
-		<div class="flex flex-col gap-1 items-start">
-			<label for="task-list-filter">Filter</label>
-			<select name="task-list-filter" id="task-list-filter" class="input-common">
-				<option value="all">Show all</option>
-				<option value="important">Important</option>
-				<option value="active">Active</option>
-				<option value="completed">Completed</option>
-			</select>
-		</div>
-		<button type="submit" class="btn">Apply</button>
-	</form>
+	<div class="flex flex-wrap gap-8 items-end">
+		<form
+			method="post"
+			action="?/organizeTodos"
+			use:enhance={() => {
+				return async ({ update }) => {
+					update({ reset: false });
+				};
+			}}
+			class="flex items-end flex-wrap gap-4"
+		>
+			<div class="flex flex-col gap-1 items-start">
+				<label for="task-list-filter">Filter</label>
+				<select
+					name="task-list-filter"
+					id="task-list-filter"
+					class="input-common"
+					value={data.activeFilter}
+				>
+					<option value="all">Show all</option>
+					<option value="important">Important</option>
+					<option value="active">Active</option>
+					<option value="completed">Completed</option>
+				</select>
+			</div>
+			<div class="flex flex-col gap-1 items-start">
+				<label for="task-list-sort">Sort</label>
+				<select
+					name="task-list-sort"
+					id="task-list-sort"
+					class="input-common"
+					value={data.activeSort}
+				>
+					<option value="creation">Creation date</option>
+					<option value="due-date">Due date</option>
+				</select>
+			</div>
+			<button type="submit" class="btn">Apply</button>
+		</form>
+		<form method="post" action="?/deleteCompletedTodos" class="ms-auto" use:enhance>
+			<button type="submit" class="btn">Delete completed tasks</button>
+		</form>
+	</div>
 	{#if data.todos.length > 0}
 		<ul class="flex flex-col gap-4 mt-4">
 			{#if data.session}
-				{#each form?.todos || data.todos as { id, title, is_completed, is_important, due_date }}
+				{#each data.todos as { id, title, is_completed, is_important, due_date }}
 					{@const dueDateInput = due_date ? new Date(due_date).toISOString().split('T')[0] : ''}
 					<li
 						class="ps-4 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded dark:bg-neutral-800 dark:border-neutral-700"
@@ -194,7 +214,7 @@
 								</div>
 							</details>
 						</div>
-						<div class="flex flex-wrap items-end gap-4">
+						<div class="flex flex-wrap items-end gap-x-4 gap-y-0">
 							{#if is_important}
 								<p>
 									<small class="flex gap-1">
