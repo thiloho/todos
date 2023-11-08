@@ -1,11 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import type { ChangeEventHandler } from 'svelte/elements';
 
 	export let data: PageData;
-
-	let showSidebar = false;
 
 	// Use :any for now, which is bad practice
 	const handleTodoCompletionState = async (event: any, id: number) => {
@@ -19,6 +16,19 @@
 			}
 		});
 	};
+
+	let isEditingItem = false;
+	let editingId: number, editingTitle: string, editingIsImportant: boolean, editingDueDate: string, originalEditingDueDate: Date;
+
+	const handleTaskEditing = (id: number, title: string, is_important: boolean, due_date: Date) => {
+		isEditingItem = true;
+
+		editingId = id;
+		editingTitle = title;
+		editingIsImportant = is_important;
+		editingDueDate = due_date ? new Date(due_date).toISOString().split('T')[0] : "";
+		originalEditingDueDate = due_date;
+	}
 </script>
 
 <h1>Tasks</h1>
@@ -71,7 +81,7 @@
 				<li
 					class="ps-4 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded dark:bg-neutral-800 dark:border-neutral-700"
 				>
-					<div class="flex gap-2 items-center">
+					<div class="flex flex-wrap gap-2 items-center">
 						<input
 							{id}
 							type="checkbox"
@@ -84,8 +94,8 @@
 						>
 						<button
 							title="Edit task"
+							on:click={() => handleTaskEditing(id, title, is_important, due_date)}
 							class="btn btn-icon ms-auto bg-neutral-200 border-neutral-300 dark:bg-neutral-700 dark:border-neutral-600"
-							on:click={() => (showSidebar = true)}
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +112,7 @@
 							</svg>
 						</button>
 					</div>
-					<div class="flex items-end gap-4">
+					<div class="flex flex-wrap items-end gap-4">
 						{#if is_important}
 							<p>
 								<small class="flex gap-1">
@@ -139,31 +149,66 @@
 						{/if}
 					</div>
 				</li>
-
-				{#if showSidebar}
-					<div
-						class="fixed end-0 top-0 border-s border-neutral-200 bg-white p-4 h-full w-[min(theme(width.64),theme(width.3/4))] flex flex-col gap-4 dark:bg-neutral-900 dark:border-neutral-800"
-					>
-						<button
-							title="Close sidebar"
-							on:click={() => (showSidebar = false)}
-							class="btn btn-icon self-end"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-								class="w-5 h-5"
-							>
-								<path
-									d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-								/>
-							</svg>
-						</button>
-						<h2>Edit todo</h2>
-					</div>
-				{/if}
 			{/each}
+		{/if}
+		{#if isEditingItem}
+			<div
+				class="fixed end-0 top-0 border-s border-neutral-200 bg-white p-4 h-full w-[min(theme(width.96),theme(width.3/4))] flex flex-col gap-4 dark:bg-neutral-900 dark:border-neutral-800"
+			>
+				<button title="Close sidebar" on:click={() => isEditingItem = false} class="btn btn-icon self-end">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 20 20"
+						fill="currentColor"
+						class="w-5 h-5"
+					>
+						<path
+							d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+						/>
+					</svg>
+				</button>
+				<h2>Edit todo</h2>
+				<form
+					action="?/updateTodo"
+					method="post"
+					use:enhance
+					class="flex flex-col gap-4"
+				>
+					<div class="flex flex-col gap-1 flex-grow">
+						<label for="edit-task-{editingId}-title">Task</label>
+						<input
+							bind:value={editingTitle}
+							name="edit-task-{editingId}-title"
+							id="edit-task-{editingId}-title"
+							type="text"
+							placeholder="Go out with the dog"
+							class="input-common input-text"
+							required
+						/>
+					</div>
+					<div class="flex flex-col gap-1">
+						<label for="edit-task-{editingId}-due-date">Due date</label>
+						<input
+							bind:value={editingDueDate}
+							name="edit-task-{editingId}-due-date"
+							id="edit-task-{editingId}-due-date"
+							type="date"
+							class="input-common"
+						/>
+					</div>
+					<div class="flex gap-2">
+						<label for="edit-task-{editingId}-important-marker">Mark as important</label>
+						<input
+							bind:checked={editingIsImportant}
+							name="edit-task-{editingId}-important-marker"
+							id="edit-task-{editingId}-important-marker"
+							type="checkbox"
+							class="scale-125"
+						/>
+					</div>
+					<button type="submit" class="btn">Update</button>
+				</form>
+			</div>
 		{/if}
 	</ul>
 </section>

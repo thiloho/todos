@@ -33,5 +33,16 @@ export const actions: Actions = {
 		];
 
 		await pool.query(text, values);
+	},
+	updateTodo: async ({ locals, request }) => {
+		const session = await locals.auth.validate();
+
+		if (!session) {
+			return json({ message: 'Unauthorized' }, { status: 401 });
+		}
+
+		const data = await request.formData();
+
+		console.log(data);
 	}
 };
