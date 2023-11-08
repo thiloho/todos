@@ -34,6 +34,29 @@ export const actions: Actions = {
 
 		await pool.query(text, values);
 	},
+	updateTodoCompletionState: async ({ locals, request }) => {
+		const session = await locals.auth.validate();
+
+		if (!session) {
+			return json({ message: 'Unauthorized' }, { status: 401 });
+		}
+
+		const data = await request.formData();
+
+		const taskId = data.get('taskId');
+		const isCompleted = data.get('isCompleted') === 'true';
+
+		const text = `
+			UPDATE user_todo
+			SET is_completed = $1,
+				updated_at = CURRENT_TIMESTAMP
+			WHERE id = $2 AND user_id = $3
+		`;
+
+		const values = [!isCompleted, taskId, session.user.userId];
+
+		await pool.query(text, values);
+	},
 	updateTodo: async ({ locals, request }) => {
 		const session = await locals.auth.validate();
 
@@ -60,6 +83,27 @@ export const actions: Actions = {
 		`;
 
 		const values = [title, dueDate || null, isImportant || false, editingId, session.user.userId];
+
+		await pool.query(text, values);
+	},
+	deleteTodo: async ({ locals, request }) => {
+		const session = await locals.auth.validate();
+
+		if (!session) {
+			return json({ message: 'Unauthorized' }, { status: 401 });
+		}
+
+		const data = await request.formData();
+
+		const taskField = Array.from(data.keys()).find((key) => key.startsWith('edit-task-'));
+		const taskId = taskField?.split('-')[2];
+
+		const text = `
+			DELETE FROM user_todo
+			WHERE id = $1 AND user_id = $2
+		`;
+
+		const values = [taskId, session.user.userId];
 
 		await pool.query(text, values);
 	}

@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
-	const text = 'SELECT * FROM user_todo WHERE user_id = $1';
+	const text = 'SELECT * FROM user_todo WHERE user_id = $1 ORDER BY id DESC';
 	const values = [session?.user.userId];
 
 	const res = await pool.query(text, values);
