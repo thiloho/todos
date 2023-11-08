@@ -1,8 +1,10 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 
 	export let data: PageData;
+
+	export let form: ActionData;
 </script>
 
 <h1>Tasks</h1>
@@ -38,7 +40,16 @@
 </section>
 <section class="flex flex-col gap-4">
 	<h2>Task list</h2>
-	<form action="">
+	<form
+		method="post"
+		action="?/filterTodos"
+		use:enhance={() => {
+			return async ({ update }) => {
+				update({ reset: false });
+			};
+		}}
+		class="flex items-end gap-2"
+	>
 		<div class="flex flex-col gap-1 items-start">
 			<label for="task-list-filter">Filter</label>
 			<select name="task-list-filter" id="task-list-filter" class="input-common">
@@ -48,11 +59,12 @@
 				<option value="completed">Completed</option>
 			</select>
 		</div>
+		<button type="submit" class="btn">Apply</button>
 	</form>
 	{#if data.todos.length > 0}
 		<ul class="flex flex-col gap-4 mt-4">
 			{#if data.session}
-				{#each data.todos as { id, title, is_completed, is_important, due_date }}
+				{#each form?.todos || data.todos as { id, title, is_completed, is_important, due_date }}
 					{@const dueDateInput = due_date ? new Date(due_date).toISOString().split('T')[0] : ''}
 					<li
 						class="ps-4 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded dark:bg-neutral-800 dark:border-neutral-700"

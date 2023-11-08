@@ -34,6 +34,56 @@ export const actions: Actions = {
 
 		await pool.query(text, values);
 	},
+	filterTodos: async ({ locals, request }) => {
+		const session = await locals.auth.validate();
+
+		if (!session) {
+			return json({ message: 'Unauthorized' }, { status: 401 });
+		}
+
+		const data = await request.formData();
+
+		const activeFilter = data.get('task-list-filter');
+
+		let text: string;
+
+		switch (activeFilter) {
+			case 'important':
+				text = `
+					SELECT * FROM user_todo
+					WHERE is_important = true AND user_id = $1
+					ORDER BY id DESC
+				`;
+				break;
+			case 'active':
+				text = `
+					SELECT * FROM user_todo
+					WHERE is_completed = false AND user_id = $1
+					ORDER BY id DESC
+				`;
+				break;
+			case 'completed':
+				text = `
+					SELECT * FROM user_todo
+					WHERE is_completed = true AND user_id = $1
+					ORDER BY id DESC
+				`;
+				break;
+			default:
+				text = `
+					SELECT * FROM user_todo
+					WHERE user_id = $1
+					ORDER BY id DESC
+				`;
+				break;
+		}
+
+		const values = [session.user.userId];
+
+		const res = await pool.query(text, values);
+
+		return { todos: res.rows };
+	},
 	updateTodoCompletionState: async ({ locals, request }) => {
 		const session = await locals.auth.validate();
 
