@@ -1,10 +1,14 @@
 import type { Actions, PageServerLoad } from './$types';
-import { json } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { pool } from '$lib/server/lucia';
 import { generateFilterQuery, generateSortQuery } from '$lib/utilities';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
+
+	if (!session) {
+		throw redirect(302, '/login');
+	}
 
 	const text = `
 		SELECT * FROM user_todo_organization
@@ -29,7 +33,7 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 
 		if (!session) {
-			return json({ message: 'Unauthorized' }, { status: 401 });
+			return fail(401);
 		}
 
 		const data = await request.formData();
@@ -53,7 +57,7 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 
 		if (!session) {
-			return json({ message: 'Unauthorized' }, { status: 401 });
+			return fail(401);
 		}
 
 		const data = await request.formData();
@@ -84,7 +88,7 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 
 		if (!session) {
-			return json({ message: 'Unauthorized' }, { status: 401 });
+			return fail(401);
 		}
 
 		const text = `
@@ -100,7 +104,7 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 
 		if (!session) {
-			return json({ message: 'Unauthorized' }, { status: 401 });
+			return fail(401);
 		}
 
 		const data = await request.formData();
@@ -123,7 +127,7 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 
 		if (!session) {
-			return json({ message: 'Unauthorized' }, { status: 401 });
+			return fail(401);
 		}
 
 		const data = await request.formData();
@@ -152,7 +156,7 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 
 		if (!session) {
-			return json({ message: 'Unauthorized' }, { status: 401 });
+			return fail(401);
 		}
 
 		const data = await request.formData();

@@ -14,10 +14,7 @@
 			clip-rule="evenodd"
 		/>
 	</svg>
-	<p>
-		When you log in, your todos are saved to your account. This means you can see them on any device
-		where you are signed in with the same account.
-	</p>
+	<p>Please login to continue.</p>
 </div>
 
 <div class="flex gap-4">

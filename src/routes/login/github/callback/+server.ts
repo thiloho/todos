@@ -1,4 +1,4 @@
-import { auth, githubAuth } from '$lib/server/lucia';
+import { auth, githubAuth, pool } from '$lib/server/lucia';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 import type { RequestHandler } from './$types';
 
@@ -18,11 +18,21 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		const getUser = async () => {
 			const existingUser = await getExistingUser();
 			if (existingUser) return existingUser;
+
 			const user = await createUser({
 				attributes: {
-					username: githubUser.login
+					username: githubUser.login,
+					auth_provider: 'GitHub'
 				}
 			});
+
+			const text = `
+				INSERT INTO user_todo_organization (user_id) VALUES ($1);
+			`;
+			const values = [user.userId];
+
+			await pool.query(text, values);
+
 			return user;
 		};
 

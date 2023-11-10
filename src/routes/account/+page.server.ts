@@ -8,7 +8,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (!session) throw redirect(302, '/login');
 	return {
 		userId: session.user.userId,
-		username: session.user.username
+		username: session.user.username,
+		authProvider: session.user.authProvider
 	};
 };
 
@@ -18,6 +19,12 @@ export const actions: Actions = {
 		if (!session) return fail(401);
 		await auth.validateSession(session.sessionId);
 		locals.auth.setSession(null);
+		throw redirect(302, '/login');
+	},
+	deleteAccount: async ({ locals }) => {
+		const session = await locals.auth.validate();
+		if (!session) return fail(401);
+		await auth.deleteUser(session.user.userId);
 		throw redirect(302, '/login');
 	}
 };

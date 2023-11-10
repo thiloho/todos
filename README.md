@@ -1,7 +1,9 @@
 # todos
+
 A simple yet powerful todo application for managing your tasks.
 
 ## Features
+
 - Works completely without JavaScript (slightly degrades user experience)
 - Optionally log in with GitHub or Google to permanently save your tasks to your account
 - Add due dates to your tasks and mark them as important
