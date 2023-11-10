@@ -46,7 +46,7 @@ export const actions: Actions = {
 
 		const values = [
 			session.user.userId,
-			data.get('new-task-title') || 'This is just a simple test',
+			data.get('new-task-title'),
 			data.get('new-task-important-marker') || false,
 			data.get('new-task-due-date') || null
 		];
@@ -161,8 +161,7 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 
-		const taskField = Array.from(data.keys()).find((key) => key.startsWith('edit-task-'));
-		const taskId = taskField?.split('-')[2];
+		const taskId = data.get('taskId');
 
 		const text = `
 			DELETE FROM user_todo

@@ -19,7 +19,7 @@
 		{value}
 	>
 		{#each options as option}
-			<option value={option}>{formatDisplayedString(option)}</option>
+			<option selected={value === option} value={option}>{formatDisplayedString(option)}</option>
 		{/each}
 	</select>
 </div>

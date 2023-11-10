@@ -27,7 +27,7 @@
 		@apply ps-2 pe-2 py-1 bg-neutral-100 border rounded border-neutral-200 hover:underline dark:bg-neutral-800 dark:border-neutral-700;
 	}
 	.btn-icon {
-		@apply p-2 no-underline hover:scale-105;
+		@apply p-2 no-underline hover:scale-105 grid place-content-center;
 	}
 	.btn-icon-sm {
 		@apply p-0.5;
