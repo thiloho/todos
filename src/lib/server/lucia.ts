@@ -37,7 +37,9 @@ export const githubAuth = github(auth, {
 export const googleAuth = google(auth, {
 	clientId: env.GOOGLE_CLIENT_ID,
 	clientSecret: env.GOOGLE_CLIENT_SECRET,
-	redirectUri: 'http://localhost:5173/login/google/callback'
+	redirectUri: dev
+		? 'http://localhost:5173/login/google/callback'
+		: 'http://todos.thilohohlt.com/login/google/callback'
 });
 
 export type Auth = typeof auth;
