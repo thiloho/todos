@@ -6,10 +6,18 @@
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     devShells.${system}.default = pkgs.mkShell {
-      packages = with pkgs; [
+      buildInputs = with pkgs; [
         nodejs_20
-        tree
       ];
+    };
+    packages.${system}.default = pkgs.buildNpmPackage {
+      name = "build-todos-application";
+      src = ./.;
+      npmDepsHash = "sha256-mTpjBKTIJkYVj2jrH5lF/n3Axceak4L60ZDQECQhGew=";
+      installPhase = ''
+        mkdir $out
+        cp -r build/* $out
+      '';
     };
   };
 }
