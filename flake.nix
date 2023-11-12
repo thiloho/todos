@@ -17,6 +17,8 @@
       installPhase = ''
         mkdir $out
         cp -r build/* $out
+        cp package.json $out
+        cp -r node_modules $out
       '';
     };
   };
