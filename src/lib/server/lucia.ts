@@ -39,7 +39,7 @@ export const googleAuth = google(auth, {
 	clientSecret: env.GOOGLE_CLIENT_SECRET,
 	redirectUri: dev
 		? 'http://localhost:5173/login/google/callback'
-		: 'http://todos.thilohohlt.com/login/google/callback'
+		: 'https://todos.thilohohlt.com/login/google/callback'
 });
 
 export type Auth = typeof auth;
