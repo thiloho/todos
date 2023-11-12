@@ -24,8 +24,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const filterSortQuery = generateSortQuery(activeSort, filterQuery);
 
 	const todos = (await pool.query(filterSortQuery, [session?.user.userId])).rows;
+	const allTodos = (
+		await pool.query(generateSortQuery('', generateFilterQuery('')), [session?.user.userId])
+	).rows;
 
-	return { todos, activeFilter, activeSort };
+	return { todos, activeFilter, activeSort, allTodos };
 };
 
 export const actions: Actions = {
