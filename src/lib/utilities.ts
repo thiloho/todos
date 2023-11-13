@@ -33,7 +33,17 @@ export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterT
 	let text;
 	switch (activeSort) {
 		case 'due-date':
-			text = filterText + 'ORDER BY due_date';
+			text =
+				filterText +
+				`
+				ORDER BY
+					CASE
+						WHEN due_date IS NULL THEN 1
+						ELSE 0
+					END,
+					due_date,
+					id
+			`;
 			break;
 		default:
 			text = filterText + 'ORDER BY created_at DESC';
