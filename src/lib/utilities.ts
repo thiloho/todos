@@ -42,7 +42,7 @@ export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterT
 						ELSE 0
 					END,
 					due_date,
-					id
+					created_at DESC
 			`;
 			break;
 		default:

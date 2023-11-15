@@ -1,20 +1,33 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import OrganizeSelect from '$lib/components/OrganizeSelect.svelte';
 
 	export let data: PageData;
 
-	let isEditingItem = false;
-	let editingId: number, editingTitle: string, editingIsImportant: boolean, editingDueDate: string;
+	export let form: ActionData;
 
-	const handleTaskEditing = (id: number, title: string, is_important: boolean, due_date: Date) => {
+	let isEditingItem = false;
+	let editingId: number,
+		editingTitle: string,
+		editingIsImportant: boolean,
+		editingDueDate: string,
+		editingCategoryId: number;
+
+	const handleTaskEditing = (
+		id: number,
+		title: string,
+		is_important: boolean,
+		due_date: Date,
+		category_id: number
+	) => {
 		isEditingItem = true;
 
 		editingId = id;
 		editingTitle = title;
 		editingIsImportant = is_important;
 		editingDueDate = due_date ? new Date(due_date).toISOString().split('T')[0] : '';
+		editingCategoryId = category_id;
 	};
 </script>
 
@@ -31,8 +44,6 @@
 				placeholder="Go out with the dog"
 				class="input-common input-text"
 				maxlength="255"
-				minlength="10"
-				pattern="\S(.*\S)?"
 				required
 			/>
 		</div>
@@ -51,6 +62,11 @@
 		</div>
 		<button type="submit" class="btn">Create</button>
 	</form>
+	{#if form?.createTitleError}
+		<p>
+			<small class="text-red-900 dark:text-red-400">The task title cannot be blank.</small>
+		</p>
+	{/if}
 </section>
 {#if data.allTodos.length !== 0}
 	<section class="flex flex-col gap-4">
@@ -76,6 +92,16 @@
 					organizeMethod="sort"
 					options={['creation-date', 'due-date']}
 				/>
+				<div class="flex gap-2">
+					<label for="task-list-group">Group</label>
+					<input
+						name="task-list-group"
+						id="task-list-group"
+						type="checkbox"
+						class="scale-125"
+						checked={data.taskListIsGrouped}
+					/>
+				</div>
 				<button type="submit" class="btn">Apply</button>
 			</form>
 			{#if data.activeFilter === 'completed' && data.todos.length > 0}
@@ -86,11 +112,11 @@
 		</div>
 		{#if data.session && data.todos.length > 0}
 			<ul class="flex flex-col gap-4 mt-4">
-				{#each data.todos as { id, title, is_completed, is_important, due_date }}
+				{#each data.todos as { id, title, is_completed, is_important, due_date, category_id }}
 					<li
 						class="ps-2 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded dark:bg-neutral-800 dark:border-neutral-700"
 					>
-						<div class="flex flex-wrap gap-2 items-center">
+						<div class="flex gap-2 items-center flex-wrap">
 							<form method="post" action="?/updateTodoCompletionState" use:enhance>
 								<input type="hidden" id="taskId" name="taskId" value={id} />
 								<input type="hidden" id="isCompleted" name="isCompleted" value={is_completed} />
@@ -133,7 +159,7 @@
 								class:opacity-50={is_completed}
 								class:line-through={is_completed}
 								class="flex-grow text-start"
-								on:click={() => handleTaskEditing(id, title, is_important, due_date)}
+								on:click={() => handleTaskEditing(id, title, is_important, due_date, category_id)}
 							>
 								{title}
 							</button>
@@ -220,8 +246,6 @@
 								class="input-common input-text"
 								value={editingTitle}
 								maxlength="255"
-								minlength="10"
-								pattern="\S(.*\S)?"
 								required
 							/>
 						</div>
@@ -245,30 +269,50 @@
 								class="scale-125"
 							/>
 						</div>
+						<div class="flex flex-col gap-1 items-start">
+							<label for="edit-task-{editingId}-category">Category</label>
+							<select
+								name="edit-task-{editingId}-category"
+								id="edit-task-{editingId}-category"
+								class="input-common"
+								value={data.todos.find((todo) => todo.id === editingId).category_id}
+							>
+								{#each data.categories.map((category) => category.id) as option}
+									<option value={option}
+										>{data.categories.find((category) => category.id === option).name}</option
+									>
+								{/each}
+							</select>
+						</div>
 						<button type="submit" class="btn">Update</button>
-						<form
-							action="?/deleteTodo"
-							method="post"
-							use:enhance={() => {
-								isEditingItem = false;
-							}}
-						>
-							<input type="hidden" id="taskId" name="taskId" value={editingId} />
-							<button class="btn btn-icon" title="Delete todo">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 20 20"
-									fill="currentColor"
-									class="w-5 h-5"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
-										clip-rule="evenodd"
-									/>
-								</svg>
-							</button>
-						</form>
+					</form>
+					{#if form?.updateTitleError}
+						<p>
+							<small class="text-red-900 dark:text-red-400">The task title cannot be blank.</small>
+						</p>
+					{/if}
+					<form
+						action="?/deleteTodo"
+						method="post"
+						use:enhance={() => {
+							isEditingItem = false;
+						}}
+					>
+						<input type="hidden" id="taskId" name="taskId" value={editingId} />
+						<button class="btn btn-icon" title="Delete todo">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								class="w-5 h-5"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+						</button>
 					</form>
 				</div>
 			{/if}

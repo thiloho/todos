@@ -28,7 +28,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 		await pool.query(generateSortQuery('', generateFilterQuery('')), [session?.user.userId])
 	).rows;
 
-	return { todos, activeFilter, activeSort, allTodos };
+	const categories = (await pool.query('SELECT * FROM todo_category')).rows;
+
+	const taskListIsGrouped = (
+		await pool.query('SELECT is_grouped from user_todo_organization WHERE user_id = $1', [
+			session?.user.userId
+		])
+	).rows[0].is_grouped;
+
+	return { todos, activeFilter, activeSort, allTodos, categories, taskListIsGrouped };
 };
 
 export const actions: Actions = {
@@ -41,6 +49,12 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 
+		const taskTitle = data.get('new-task-title') as string;
+
+		if (taskTitle.trim().length === 0) {
+			return { createTitleError: true };
+		}
+
 		const text = `
 			INSERT INTO user_todo (user_id, title, is_important, due_date)
 			VALUES($1, $2, $3, $4)
@@ -49,7 +63,7 @@ export const actions: Actions = {
 
 		const values = [
 			session.user.userId,
-			data.get('new-task-title'),
+			taskTitle.replace(/\s+/g, ' ').trim(),
 			data.get('new-task-important-marker') || false,
 			data.get('new-task-due-date') || null
 		];
@@ -67,6 +81,7 @@ export const actions: Actions = {
 
 		const activeFilter = data.get('task-list-filter');
 		const activeSort = data.get('task-list-sort');
+		const isGrouped = data.get('task-list-group');
 
 		const textFilter = `
 			INSERT INTO user_todo_organization (user_id, filter)
@@ -80,12 +95,20 @@ export const actions: Actions = {
 			ON CONFLICT (user_id)
 			DO UPDATE SET sort_by = EXCLUDED.sort_by;
 		`;
+		const groupedText = `
+			INSERT INTO user_todo_organization (user_id, is_grouped)
+			VALUES ($1, $2)
+			ON CONFLICT (user_id)
+			DO UPDATE SET is_grouped = EXCLUDED.is_grouped
+		`;
 
 		const valuesFilter = [session.user.userId, activeFilter];
 		const valuesSort = [session.user.userId, activeSort];
+		const valuesGroup = [session.user.userId, isGrouped || false];
 
 		await pool.query(textFilter, valuesFilter);
 		await pool.query(textSort, valuesSort);
+		await pool.query(groupedText, valuesGroup);
 	},
 	deleteCompletedTodos: async ({ locals }) => {
 		const session = await locals.auth.validate();
@@ -138,20 +161,34 @@ export const actions: Actions = {
 		const taskField = Array.from(data.keys()).find((key) => key.startsWith('edit-task-'));
 		const editingId = taskField?.split('-')[2];
 
-		const title = data.get(`edit-task-${editingId}-title`);
+		const title = data.get(`edit-task-${editingId}-title`) as string;
+
+		if (title.trim().length === 0) {
+			return { updateTitleError: true };
+		}
+
 		const dueDate = data.get(`edit-task-${editingId}-due-date`);
 		const isImportant = data.get(`edit-task-${editingId}-important-marker`);
+		const category = data.get(`edit-task-${editingId}-category`);
 
 		const text = `
 			UPDATE user_todo
 			SET title = $1,
 				due_date = $2,
 				is_important = $3,
+				category_id = $4,
 				updated_at = CURRENT_TIMESTAMP
-			WHERE id = $4 AND user_id = $5
+			WHERE id = $5 AND user_id = $6
 		`;
 
-		const values = [title, dueDate || null, isImportant || false, editingId, session.user.userId];
+		const values = [
+			title.replace(/\s+/g, ' ').trim(),
+			dueDate || null,
+			isImportant || false,
+			category,
+			editingId,
+			session.user.userId
+		];
 
 		await pool.query(text, values);
 	},
