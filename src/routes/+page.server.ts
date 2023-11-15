@@ -36,7 +36,41 @@ export const load: PageServerLoad = async ({ locals }) => {
 		])
 	).rows[0].is_grouped;
 
-	return { todos, activeFilter, activeSort, allTodos, categories, taskListIsGrouped };
+	const groupedText = `
+		SELECT 
+			COALESCE(c.name, 'Uncategorized') AS category_name,
+			c.id AS category_id,
+			COALESCE(c.color_light, '#000000') AS color_light,
+			COALESCE(c.color_dark, '#ffffff') AS color_dark,
+			json_agg(
+				json_build_object(
+					'id', t.id,
+					'user_id', t.user_id,
+					'title', t.title,
+					'is_completed', t.is_completed,
+					'is_important', t.is_important,
+					'due_date', t.due_date,
+					'created_at', t.created_at,
+					'updated_at', t.updated_at,
+					'category_id', t.category_id
+				)
+			) AS todos
+		FROM 
+			user_todo AS t
+		LEFT JOIN 
+			todo_category AS c ON t.category_id = c.id
+		WHERE 
+			t.user_id = $1
+		GROUP BY 
+			category_name, color_light, color_dark, c.id
+		ORDER BY 
+			CASE WHEN c.id IS NULL THEN 1 ELSE 0 END, 
+			c.id;
+	`;
+
+	const groupedTodos = (await pool.query(groupedText, [session?.user.userId])).rows;
+
+	return { todos, activeFilter, activeSort, allTodos, categories, taskListIsGrouped, groupedTodos };
 };
 
 export const actions: Actions = {
