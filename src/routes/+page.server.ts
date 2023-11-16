@@ -54,9 +54,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 					'updated_at', t.updated_at,
 					'category_id', t.category_id
 				)
+				${generateSortQuery(activeSort)}
 			) AS todos
 		FROM 
-			user_todo AS t
+			(
+				${generateFilterQuery(activeFilter)}
+			) AS t
 		LEFT JOIN 
 			todo_category AS c ON t.category_id = c.id
 		WHERE 
@@ -219,7 +222,7 @@ export const actions: Actions = {
 			title.replace(/\s+/g, ' ').trim(),
 			dueDate || null,
 			isImportant || false,
-			category,
+			category || null,
 			editingId,
 			session.user.userId
 		];

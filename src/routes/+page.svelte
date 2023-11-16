@@ -90,7 +90,7 @@
 		</div>
 		{#if data.todos.length > 0}
 			{#if data.taskListIsGrouped}
-				{#each data.groupedTodos as { category_name, category_id, todos }}
+				{#each data.groupedTodos as { category_name, todos }}
 					<section>
 						<h3>{category_name}</h3>
 						<TodoList

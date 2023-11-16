@@ -29,7 +29,7 @@ export const generateFilterQuery = (activeFilter: FormDataEntryValue | null) => 
 	return text;
 };
 
-export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterText: string) => {
+export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterText = '') => {
 	let text;
 	switch (activeSort) {
 		case 'due-date':

@@ -48,7 +48,7 @@
 </script>
 
 <ul class="flex flex-col gap-4 mt-4">
-	{#each todos as { id, title, is_completed, is_important, due_date }}
+	{#each todos as { id, title, is_completed, is_important, due_date, category_id }}
 		<li
 			class="ps-2 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded dark:bg-neutral-800 dark:border-neutral-700"
 		>
@@ -102,7 +102,7 @@
 			</div>
 			<div
 				class="flex flex-wrap items-center gap-x-4 gap-y-0"
-				class:mt-2={is_important || due_date}
+				class:mt-2={is_important || due_date || category_id}
 			>
 				{#if is_important}
 					<p>
@@ -125,8 +125,19 @@
 				{/if}
 				{#if due_date}
 					<p>
-						<small class="flex gap-1 items-center"
-							>Due
+						<small class="flex gap-1 items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								class="w-5 h-5"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+									clip-rule="evenodd"
+								/>
+							</svg>
 							<time datetime={due_date} class="italic"
 								>{new Intl.DateTimeFormat('en-US', {
 									weekday: 'short',
@@ -135,6 +146,29 @@
 									day: 'numeric'
 								}).format(new Date(due_date))}</time
 							>
+						</small>
+					</p>
+				{/if}
+				{#if category_id}
+					<p>
+						<small class="flex items-center gap-1">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								class="w-5 h-5 text-[--light-text] dark:text-[--dark-text]"
+								style="--dark-text: {categories.find((category) => category.id === category_id)
+									?.color_dark}; --light-text: {categories.find(
+									(category) => category.id === category_id
+								)?.color_light}"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M5.5 3A2.5 2.5 0 003 5.5v2.879a2.5 2.5 0 00.732 1.767l6.5 6.5a2.5 2.5 0 003.536 0l2.878-2.878a2.5 2.5 0 000-3.536l-6.5-6.5A2.5 2.5 0 008.38 3H5.5zM6 7a1 1 0 100-2 1 1 0 000 2z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+							{categories.find((category) => category.id === category_id)?.name}
 						</small>
 					</p>
 				{/if}
@@ -212,8 +246,9 @@
 					name="edit-task-{$editingId}-category"
 					id="edit-task-{$editingId}-category"
 					class="input-common"
-					value={uncategorizedTodos.find((todo) => todo.id === $editingId)?.category_id}
+					value={uncategorizedTodos.find((todo) => todo.id === $editingId)?.category_id || ''}
 				>
+					<option value="">None</option>
 					{#each categories.map((category) => category.id) as option}
 						<option value={option}
 							>{categories.find((category) => category.id === option)?.name}</option
