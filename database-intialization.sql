@@ -41,6 +41,7 @@ CREATE TABLE user_todo (
     is_completed boolean NOT NULL DEFAULT false,
     is_important boolean NOT NULL DEFAULT false,
     due_date timestamp with time zone,
+    is_overdue boolean NOT NULL DEFAULT false,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     category_id INT,

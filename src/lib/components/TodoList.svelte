@@ -9,6 +9,7 @@
 		created_at: string;
 		updated_at: string;
 		category_id: number | null;
+		is_overdue: boolean;
 	};
 
 	type Category = {
@@ -48,7 +49,7 @@
 </script>
 
 <ul class="flex flex-col gap-4 mt-4">
-	{#each todos as { id, title, is_completed, is_important, due_date, category_id }}
+	{#each todos as { id, title, is_completed, is_important, due_date, category_id, is_overdue }}
 		<li
 			class="ps-2 pe-2 py-2 border border-neutral-200 bg-neutral-100 rounded dark:bg-neutral-800 dark:border-neutral-700"
 		>
@@ -138,6 +139,9 @@
 									clip-rule="evenodd"
 								/>
 							</svg>
+							{#if is_overdue}
+								<span class="underline text-red-900 dark:text-red-400">Overdue</span>
+							{/if}
 							<time datetime={due_date} class="italic"
 								>{new Intl.DateTimeFormat('en-US', {
 									weekday: 'short',
@@ -233,7 +237,7 @@
 			<div class="flex gap-2">
 				<label for="edit-task-{$editingId}-important-marker">Mark as important</label>
 				<input
-					bind:checked={$editingIsImportant}
+					checked={$editingIsImportant}
 					name="edit-task-{$editingId}-important-marker"
 					id="edit-task-{$editingId}-important-marker"
 					type="checkbox"

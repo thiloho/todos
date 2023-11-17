@@ -51,3 +51,15 @@ export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterT
 	}
 	return text;
 };
+
+export const isOverdue = (dueDateString: string | null) => {
+	if (!dueDateString) return false;
+
+	const currentDate = new Date();
+	currentDate.setHours(0, 0, 0, 0);
+
+	const dueDate = new Date(dueDateString);
+	dueDate.setHours(0, 0, 0, 0);
+
+	return currentDate > dueDate;
+};

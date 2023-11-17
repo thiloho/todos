@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import OrganizeSelect from '$lib/components/OrganizeSelect.svelte';
 	import TodoList from '$lib/components/TodoList.svelte';
+	import { isEditingItem } from '$lib/stores';
 
 	export let data: PageData;
 
@@ -54,6 +55,8 @@
 				method="post"
 				action="?/organizeTodos"
 				use:enhance={() => {
+					$isEditingItem = false;
+
 					return async ({ update }) => {
 						update({ reset: false });
 					};

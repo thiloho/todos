@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { pool } from '$lib/server/lucia';
-import { generateFilterQuery, generateSortQuery } from '$lib/utilities';
+import { generateFilterQuery, generateSortQuery, isOverdue } from '$lib/utilities';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -52,7 +52,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 					'due_date', t.due_date,
 					'created_at', t.created_at,
 					'updated_at', t.updated_at,
-					'category_id', t.category_id
+					'category_id', t.category_id,
+					'is_overdue', t.is_overdue
 				)
 				${generateSortQuery(activeSort)}
 			) AS todos
@@ -87,14 +88,15 @@ export const actions: Actions = {
 		const data = await request.formData();
 
 		const taskTitle = data.get('new-task-title') as string;
+		const dueDate = (data.get('new-task-due-date') as string) || null;
 
 		if (taskTitle.trim().length === 0) {
 			return { createTitleError: true };
 		}
 
 		const text = `
-			INSERT INTO user_todo (user_id, title, is_important, due_date)
-			VALUES($1, $2, $3, $4)
+			INSERT INTO user_todo (user_id, title, is_important, due_date, is_overdue)
+			VALUES($1, $2, $3, $4, $5)
 			RETURNING *
     	`;
 
@@ -102,7 +104,8 @@ export const actions: Actions = {
 			session.user.userId,
 			taskTitle.replace(/\s+/g, ' ').trim(),
 			data.get('new-task-important-marker') || false,
-			data.get('new-task-due-date') || null
+			dueDate,
+			isOverdue(dueDate)
 		];
 
 		await pool.query(text, values);
@@ -204,7 +207,7 @@ export const actions: Actions = {
 			return { updateTitleError: true };
 		}
 
-		const dueDate = data.get(`edit-task-${editingId}-due-date`);
+		const dueDate = (data.get(`edit-task-${editingId}-due-date`) as string) || null;
 		const isImportant = data.get(`edit-task-${editingId}-important-marker`);
 		const category = data.get(`edit-task-${editingId}-category`);
 
@@ -214,15 +217,17 @@ export const actions: Actions = {
 				due_date = $2,
 				is_important = $3,
 				category_id = $4,
+				is_overdue = $5,
 				updated_at = CURRENT_TIMESTAMP
-			WHERE id = $5 AND user_id = $6
+			WHERE id = $6 AND user_id = $7
 		`;
 
 		const values = [
 			title.replace(/\s+/g, ' ').trim(),
-			dueDate || null,
+			dueDate,
 			isImportant || false,
 			category || null,
+			isOverdue(dueDate),
 			editingId,
 			session.user.userId
 		];
