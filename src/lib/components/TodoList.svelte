@@ -24,6 +24,7 @@
 	export let categories: Category[];
 	export let uncategorizedTodos: Task[];
 
+	import DateFormat from '$lib/components/DateFormat.svelte';
 	import { enhance } from '$app/forms';
 	import {
 		isEditingItem,
@@ -142,14 +143,7 @@
 							{#if is_overdue}
 								<span class="underline text-red-900 dark:text-red-400">Overdue</span>
 							{/if}
-							<time datetime={due_date} class="italic"
-								>{new Intl.DateTimeFormat('en-US', {
-									weekday: 'short',
-									year: 'numeric',
-									month: 'long',
-									day: 'numeric'
-								}).format(new Date(due_date))}</time
-							>
+							<DateFormat dateString={due_date} />
 						</small>
 					</p>
 				{/if}
@@ -267,12 +261,27 @@
 				<small class="text-red-900 dark:text-red-400">The task title cannot be blank.</small>
 			</p>
 		{/if}
+		<ul class="mt-auto">
+			<li>
+				Created at: <DateFormat
+					dateString={uncategorizedTodos.find((todo) => todo.id === $editingId)?.created_at || ''}
+					withTime={true}
+				/>
+			</li>
+			<li>
+				Updated at: <DateFormat
+					dateString={uncategorizedTodos.find((todo) => todo.id === $editingId)?.updated_at || ''}
+					withTime={true}
+				/>
+			</li>
+		</ul>
 		<form
 			action="?/deleteTodo"
 			method="post"
 			use:enhance={() => {
 				$isEditingItem = false;
 			}}
+			class="ms-auto"
 		>
 			<input type="hidden" id="taskId" name="taskId" value={$editingId} />
 			<button class="btn btn-icon" title="Delete todo">
