@@ -12,4 +12,4 @@ A simple yet powerful todo application for managing your tasks.
 
 ## Preview
 
-[Screencast from 2023-11-21 21-50-17.webm](https://github.com/thiloho/todos/assets/123883702/d00a046b-f77b-4ae8-aab6-7000fc0c8f1b)
+[preview-todos-thilohohlt-com.webm](https://github.com/thiloho/todos/assets/123883702/d00a046b-f77b-4ae8-aab6-7000fc0c8f1b)
