@@ -9,3 +9,7 @@ A simple yet powerful todo application for managing your tasks.
 - Add due dates to your tasks and mark them as important
 - Sort and filter tasks
 - Group tasks together by assigning them to the same category
+
+## Preview
+
+[Screencast from 2023-11-21 21-50-17.webm](https://github.com/thiloho/todos/assets/123883702/d00a046b-f77b-4ae8-aab6-7000fc0c8f1b)
