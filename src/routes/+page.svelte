@@ -91,6 +91,22 @@
 				</form>
 			{/if}
 		</div>
+		<search>
+			<form method="post" action="?/searchTodo" class="flex items-end flex-wrap gap-x-2 gap-y-4">
+				<div class="flex flex-col gap-2">
+					<label for="task-list-search">Search</label>
+					<input
+						name="task-list-search"
+						id="task-list-search"
+						type="search"
+						class="input-common"
+						placeholder="Go out"
+						value={data.searchTerm}
+					/>
+				</div>
+				<button type="submit" class="btn">Search</button>
+			</form>
+		</search>
 		{#if data.todos.length > 0}
 			{#if data.taskListIsGrouped}
 				{#each data.groupedTodos as { category_name, todos }}
@@ -113,7 +129,7 @@
 				/>
 			{/if}
 		{:else}
-			<p>You have no {data.activeFilter} tasks!</p>
+			<p>No tasks found!</p>
 		{/if}
 	</section>
 {/if}

@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { pool } from '$lib/server/lucia';
-import { generateFilterQuery, generateSortQuery, isOverdue } from '$lib/utilities';
+import { generateFilterQuery, generateSortQuery, generateSearchQuery, isOverdue } from '$lib/utilities';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -19,11 +19,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const activeFilter = (await pool.query(text, values)).rows[0].filter;
 	const activeSort = (await pool.query(text, values)).rows[0].sort_by;
+	const searchTerm = (await pool.query(text, values)).rows[0].search_term;
 
 	const filterQuery = generateFilterQuery(activeFilter);
 	const filterSortQuery = generateSortQuery(activeSort, filterQuery);
+	const searchSortQuery = generateSearchQuery(searchTerm, filterSortQuery);
 
-	const todos = (await pool.query(filterSortQuery, [session?.user.userId])).rows;
+	const todos = (await pool.query(searchSortQuery, [session?.user.userId])).rows;
 	const allTodos = (
 		await pool.query(generateSortQuery('', generateFilterQuery('')), [session?.user.userId])
 	).rows;
@@ -59,7 +61,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			) AS todos
 		FROM 
 			(
-				${generateFilterQuery(activeFilter)}
+				${generateSearchQuery(searchTerm, generateFilterQuery(activeFilter))}
 			) AS t
 		LEFT JOIN 
 			todo_category AS c ON t.category_id = c.id
@@ -74,7 +76,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const groupedTodos = (await pool.query(groupedText, [session?.user.userId])).rows;
 
-	return { todos, activeFilter, activeSort, allTodos, categories, taskListIsGrouped, groupedTodos };
+	return { todos, activeFilter, activeSort, allTodos, categories, taskListIsGrouped, groupedTodos, searchTerm };
 };
 
 export const actions: Actions = {
@@ -149,6 +151,26 @@ export const actions: Actions = {
 		await pool.query(textFilter, valuesFilter);
 		await pool.query(textSort, valuesSort);
 		await pool.query(groupedText, valuesGroup);
+	},
+	searchTodo: async ({ locals, request }) => {
+		const session = await locals.auth.validate();
+
+		if (!session) {
+			return fail(401);
+		}
+
+		const data = await request.formData();
+		const searchText = data.get('task-list-search');
+
+		const text = `
+			INSERT INTO user_todo_organization (user_id, search_term)
+			VALUES ($1, $2)
+			ON CONFLICT (user_id)
+			DO UPDATE SET search_term = EXCLUDED.search_term
+		`;
+		const values = [session.user.userId, searchText];
+
+		await pool.query(text, values);
 	},
 	deleteCompletedTodos: async ({ locals }) => {
 		const session = await locals.auth.validate();

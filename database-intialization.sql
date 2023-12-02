@@ -54,5 +54,6 @@ CREATE TABLE user_todo_organization (
     filter text NOT NULL DEFAULT 'all',
     sort_by text NOT NULL DEFAULT 'creation-date',
     is_grouped boolean NOT NULL DEFAULT false,
+    search_term text NOT NULL DEFAULT '',
     FOREIGN KEY (user_id) REFERENCES auth_user(id) ON DELETE CASCADE
 );

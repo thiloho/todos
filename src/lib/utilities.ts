@@ -52,6 +52,18 @@ export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterT
 	return text;
 };
 
+export const generateSearchQuery = (searchTerm : FormDataEntryValue | null, sortText = '') => {
+	const text = `
+		WITH FilteredTodos AS (
+			SELECT ut.*
+			FROM user_todo ut
+			JOIN user_todo_organization uto ON ut.user_id = uto.user_id
+			WHERE ut.title ILIKE CONCAT('%', '${searchTerm}', '%')
+		)` + sortText.replace('user_todo', 'FilteredTodos');
+
+	return text;
+}
+
 export const isOverdue = (dueDateString: string | null) => {
 	if (!dueDateString) return false;
 
