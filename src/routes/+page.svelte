@@ -92,7 +92,7 @@
 			{/if}
 		</div>
 		<search>
-			<form method="post" action="?/searchTodo" class="flex items-end flex-wrap gap-x-2 gap-y-4">
+			<form method="post" action="?/searchTodo" class="flex items-end flex-wrap gap-x-2 gap-y-4" use:enhance>
 				<div class="flex flex-col gap-2">
 					<label for="task-list-search">Search</label>
 					<input
