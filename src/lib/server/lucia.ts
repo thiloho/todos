@@ -5,7 +5,12 @@ import { pg } from '@lucia-auth/adapter-postgresql';
 import postgres from 'pg';
 
 import { github, google } from '@lucia-auth/oauth/providers';
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
+import {
+	GITHUB_CLIENT_ID,
+	GITHUB_CLIENT_SECRET,
+	GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET
+} from '$env/static/private';
 
 export const pool = new postgres.Pool({
 	host: '/run/postgresql',

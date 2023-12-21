@@ -20,6 +20,12 @@
         cp package.json $out
         cp -r node_modules $out
       '';
+      env = {
+        GITHUB_CLIENT_ID = "";
+        GITHUB_CLIENT_SECRET = "";
+        GOOGLE_CLIENT_ID = "";
+        GOOGLE_CLIENT_SECRET = "";
+      };
     };
   };
 }
