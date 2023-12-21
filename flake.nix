@@ -13,7 +13,7 @@
     packages.${system}.default = pkgs.buildNpmPackage {
       name = "build-todos-application";
       src = ./.;
-      npmDepsHash = "sha256-dPGVLmJPY/UPiLkeTB11nf1Cv40pseVzMPHbrLdxuGc=";
+      npmDepsHash = "sha256-71tq5+2OsZF0AZLoOaEF5uKkCVIDeIFPifnRfpC2FtY=";
       installPhase = ''
         mkdir $out
         cp -r build/* $out
