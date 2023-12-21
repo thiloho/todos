@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
 
 	if (!session) {
-		throw redirect(302, '/login');
+		redirect(302, '/login');
 	}
 
 	const text = `
