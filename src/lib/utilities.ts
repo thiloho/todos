@@ -52,8 +52,9 @@ export const generateSortQuery = (activeSort: FormDataEntryValue | null, filterT
 	return text;
 };
 
-export const generateSearchQuery = (searchTerm : FormDataEntryValue | null, sortText = '') => {
-	const text = `
+export const generateSearchQuery = (searchTerm: FormDataEntryValue | null, sortText = '') => {
+	const text =
+		`
 		WITH FilteredTodos AS (
 			SELECT ut.*
 			FROM user_todo ut
@@ -62,7 +63,7 @@ export const generateSearchQuery = (searchTerm : FormDataEntryValue | null, sort
 		)` + sortText.replace('user_todo', 'FilteredTodos');
 
 	return text;
-}
+};
 
 export const isOverdue = (dueDateString: string | null) => {
 	if (!dueDateString) return false;

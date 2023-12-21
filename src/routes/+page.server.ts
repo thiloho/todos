@@ -1,7 +1,12 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { pool } from '$lib/server/lucia';
-import { generateFilterQuery, generateSortQuery, generateSearchQuery, isOverdue } from '$lib/utilities';
+import {
+	generateFilterQuery,
+	generateSortQuery,
+	generateSearchQuery,
+	isOverdue
+} from '$lib/utilities';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -76,7 +81,16 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const groupedTodos = (await pool.query(groupedText, [session?.user.userId])).rows;
 
-	return { todos, activeFilter, activeSort, allTodos, categories, taskListIsGrouped, groupedTodos, searchTerm };
+	return {
+		todos,
+		activeFilter,
+		activeSort,
+		allTodos,
+		categories,
+		taskListIsGrouped,
+		groupedTodos,
+		searchTerm
+	};
 };
 
 export const actions: Actions = {
