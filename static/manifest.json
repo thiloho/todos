@@ -1,7 +1,7 @@
 {
 	"short_name": "Todos",
 	"name": "todos.thilohohlt.com",
-	"start_url": "/",
+	"start_url": "/?source=pwa",
 	"icons": [
 		{
 			"src": "logo_512.png",
@@ -15,7 +15,7 @@
 	"scope": "/",
 	"theme_color": "#3367D6",
 	"description": "A simple yet powerful todo application for managing your tasks.",
-	"id": "b87a745d-33ef-4725-b51d-7cf24943916c",
+	"id": "/?source=pwa",
 	"lang": "en",
 	"orientation": "any",
 	"dir": "auto",
@@ -54,5 +54,5 @@
 	"edge_side_panel": {
 		"preferred_width": 324
 	},
-    "handle_links": "preferred"
+	"handle_links": "preferred"
 }
