@@ -32,17 +32,22 @@
 			"type": "image/png",
 			"label": "Main page of the app in lightmode"
 		},
-        {
+		{
 			"src": "pwa-preview-3.png",
 			"sizes": "1080x2400",
 			"type": "image/png",
 			"label": "Editing a task"
 		},
-        {
+		{
 			"src": "pwa-preview-4.png",
 			"sizes": "1080x2400",
 			"type": "image/png",
 			"label": "Account details page"
 		}
-	]
+	],
+	"launch_handler": {
+		"client_mode": "auto"
+	},
+	"prefer_related_applications": false,
+	"scope_extensions": [{ "origin": "todos.thilohohlt.com" }]
 }
