@@ -10,6 +10,7 @@
 		}
 	],
 	"background_color": "#3367D6",
+	"display_override": ["fullscreen", "minimal-ui"],
 	"display": "standalone",
 	"scope": "/",
 	"theme_color": "#3367D6",
@@ -49,5 +50,9 @@
 		"client_mode": "auto"
 	},
 	"prefer_related_applications": false,
-	"scope_extensions": [{ "origin": "todos.thilohohlt.com" }]
+	"scope_extensions": [{ "origin": "todos.thilohohlt.com" }],
+	"edge_side_panel": {
+		"preferred_width": 324
+	},
+    "handle_links": "preferred"
 }
