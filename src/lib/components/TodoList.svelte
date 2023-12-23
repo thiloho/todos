@@ -231,7 +231,7 @@
 			<div class="flex gap-2">
 				<label for="edit-task-{$editingId}-important-marker">Mark as important</label>
 				<input
-					checked={$editingIsImportant}
+					bind:checked={$editingIsImportant}
 					name="edit-task-{$editingId}-important-marker"
 					id="edit-task-{$editingId}-important-marker"
 					type="checkbox"
