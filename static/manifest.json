@@ -18,5 +18,31 @@
 	"lang": "en",
 	"orientation": "any",
 	"dir": "auto",
-	"categories": ["productivity"]
+	"categories": ["productivity"],
+	"screenshots": [
+		{
+			"src": "pwa-preview-1.png",
+			"sizes": "1080x2400",
+			"type": "image/png",
+			"label": "Main page of the app in darkmode"
+		},
+		{
+			"src": "pwa-preview-2.png",
+			"sizes": "1080x2400",
+			"type": "image/png",
+			"label": "Main page of the app in lightmode"
+		},
+        {
+			"src": "pwa-preview-3.png",
+			"sizes": "1080x2400",
+			"type": "image/png",
+			"label": "Editing a task"
+		},
+        {
+			"src": "pwa-preview-4.png",
+			"sizes": "1080x2400",
+			"type": "image/png",
+			"label": "Account details page"
+		}
+	]
 }
