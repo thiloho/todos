@@ -13,5 +13,10 @@
 	"display": "standalone",
 	"scope": "/",
 	"theme_color": "#3367D6",
-	"description": "A simple yet powerful todo application for managing your tasks."
+	"description": "A simple yet powerful todo application for managing your tasks.",
+	"id": "b87a745d-33ef-4725-b51d-7cf24943916c",
+	"lang": "en",
+	"orientation": "any",
+	"dir": "auto",
+	"categories": ["productivity"]
 }
