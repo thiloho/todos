@@ -80,16 +80,23 @@
 	</div>
 </main>
 <footer class="p-4 border-t border-neutral-200 dark:border-neutral-700">
-	<div class="max-w-screen-2xl ms-auto me-auto flex justify-between gap-4 flex-wrap">
+	<div class="max-w-screen-2xl ms-auto me-auto flex gap-4 flex-wrap">
 		<p>
 			<small>Copyright © 2023 Thilo Hohlt.</small>
 		</p>
-		<p>
-			<small>
-				<a href="https://github.com/thiloho/todos" class="underline hover:no-underline"
-					>Source code</a
-				>
-			</small>
-		</p>
+		<div class="ms-auto text-center flex gap-4">
+			<p>
+				<small>
+					<a href="https://github.com/thiloho/todos" class="underline hover:no-underline"
+						>Source code</a
+					>
+				</small>
+			</p>
+			<p>
+				<small>
+					<a href="/privacy" class="underline hover:no-underline">Privacy</a>
+				</small>
+			</p>
+		</div>
 	</div>
 </footer>
