@@ -10,7 +10,7 @@
 	};
 </script>
 
-<div class="flex flex-col gap-1 items-start">
+<div class="flex flex-col gap-1">
 	<label for="task-list-{organizeMethod}">{formatDisplayedString(organizeMethod)}</label>
 	<select
 		name="task-list-{organizeMethod}"
