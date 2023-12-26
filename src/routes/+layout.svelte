@@ -32,7 +32,7 @@
 	}
 </script>
 
-<header class="p-4 sticky top-0 bg-white dark:bg-neutral-900">
+<header class="p-4 sticky z-30 top-0 bg-white dark:bg-neutral-900">
 	<div class="max-w-screen-2xl ms-auto me-auto flex items-center gap-4">
 		<a href="/" class="flex items-center gap-2">
 			<img src="logo_512.svg" alt="" width="32" height="32" />
