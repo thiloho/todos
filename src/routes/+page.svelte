@@ -19,7 +19,7 @@
 		<div
 			class="absolute top-12 flex flex-col gap-4 z-20 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
 		>
-			<h2>Create a new task</h2>
+			<h2>Create new task</h2>
 			<form action="?/createTodo" method="post" use:enhance class="flex flex-col gap-4">
 				<div class="flex flex-col gap-1 flex-grow">
 					<label for="new-task-title">Task</label>
@@ -61,10 +61,11 @@
 		<h2>Task list</h2>
 		<div class="flex gap-4 flex-wrap mb-2">
 			<details class="relative">
-				<summary class="btn max-w-fit cursor-pointer">Options</summary>
+				<summary class="btn max-w-fit cursor-pointer">Organise</summary>
 				<div
-					class="flex flex-col gap-8 p-4 border rounded absolute top-12 z-10 bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
+					class="flex flex-col gap-4 p-4 border rounded absolute top-12 z-10 bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
 				>
+					<h3>Organise tasks</h3>
 					<form
 						method="post"
 						action="?/organizeTodos"

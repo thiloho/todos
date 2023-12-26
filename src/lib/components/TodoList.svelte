@@ -195,7 +195,7 @@
 				/>
 			</svg>
 		</button>
-		<h3>Edit todo (id {$editingId})</h3>
+		<h3>Edit task</h3>
 		<form
 			id="update-todo"
 			action="?/updateTodo"
@@ -263,16 +263,23 @@
 		{/if}
 		<ul class="mt-auto">
 			<li>
-				Created at: <DateFormat
-					dateString={uncategorizedTodos.find((todo) => todo.id === $editingId)?.created_at || ''}
-					withTime={true}
-				/>
+				Created at: <strong
+					><DateFormat
+						dateString={uncategorizedTodos.find((todo) => todo.id === $editingId)?.created_at || ''}
+						withTime={true}
+					/></strong
+				>
 			</li>
 			<li>
-				Updated at: <DateFormat
-					dateString={uncategorizedTodos.find((todo) => todo.id === $editingId)?.updated_at || ''}
-					withTime={true}
-				/>
+				Updated at: <strong
+					><DateFormat
+						dateString={uncategorizedTodos.find((todo) => todo.id === $editingId)?.updated_at || ''}
+						withTime={true}
+					/></strong
+				>
+			</li>
+			<li>
+				Id: <strong>{$editingId}</strong>
 			</li>
 		</ul>
 		<form
