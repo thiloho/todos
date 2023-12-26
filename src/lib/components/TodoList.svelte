@@ -60,33 +60,35 @@
 					<input type="hidden" id="isCompleted" name="isCompleted" value={is_completed} />
 					<button
 						type="submit"
-						class="btn btn-icon btn-icon-sm text-white"
-						class:bg-green-900={is_completed}
-						class:dark:!bg-green-500={is_completed}
+						class="btn btn-icon text-white"
+						class:bg-green-400={is_completed}
+						class:bg-neutral-400={!is_completed}
+						class:dark:bg-green-700={is_completed}
+						class:dark:bg-neutral-700={!is_completed}
 					>
 						{#if is_completed}
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
+								viewBox="0 0 16 16"
 								fill="currentColor"
-								class="w-5 h-5"
+								class="w-4 h-4"
 							>
 								<path
 									fill-rule="evenodd"
-									d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+									d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z"
 									clip-rule="evenodd"
 								/>
 							</svg>
 						{:else}
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
+								viewBox="0 0 16 16"
 								fill="currentColor"
-								class="w-5 h-5 text-black dark:text-white"
+								class="w-4 h-4"
 							>
 								<path
 									fill-rule="evenodd"
-									d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+									d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm4-7a.75.75 0 0 0-.75-.75h-6.5a.75.75 0 0 0 0 1.5h6.5A.75.75 0 0 0 12 8Z"
 									clip-rule="evenodd"
 								/>
 							</svg>
@@ -186,12 +188,12 @@
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 20 20"
+				viewBox="0 0 16 16"
 				fill="currentColor"
-				class="w-5 h-5"
+				class="w-4 h-4"
 			>
 				<path
-					d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+					d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
 				/>
 			</svg>
 		</button>

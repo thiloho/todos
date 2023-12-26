@@ -78,7 +78,7 @@
 		<slot />
 	</div>
 </main>
-<footer class="p-4 border-t border-neutral-200 dark:border-neutral-700">
+<footer class="px-4 pt-4 pb-8 border-t border-neutral-200 dark:border-neutral-700">
 	<div class="max-w-screen-2xl ms-auto me-auto flex gap-4 flex-wrap">
 		<p>
 			<small>Copyright © 2023 Thilo Hohlt.</small>
