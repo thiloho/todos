@@ -177,7 +177,7 @@
 
 {#if $isEditingItem}
 	<div
-		class="fixed end-0 top-0 border-s border-neutral-200 bg-white p-4 h-full w-[min(theme(width.96),theme(width.3/4))] flex flex-col gap-4 dark:bg-neutral-900 dark:border-neutral-800 overflow-y-auto"
+		class="fixed z-40 end-0 top-0 border-s border-neutral-200 bg-white p-4 h-full w-[min(theme(width.96),theme(width.3/4))] flex flex-col gap-4 dark:bg-neutral-900 dark:border-neutral-800 overflow-y-auto"
 	>
 		<button
 			title="Close sidebar"

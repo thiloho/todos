@@ -73,7 +73,7 @@
 		{/if}
 	</div>
 </header>
-<main class="mt-12 mb-16 ps-4 pe-4">
+<main class="mt-4 mb-16 ps-4 pe-4">
 	<div class="max-w-screen-2xl ms-auto me-auto flex flex-col gap-8">
 		<slot />
 	</div>

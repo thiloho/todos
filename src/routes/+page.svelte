@@ -59,7 +59,7 @@
 {#if data.allTodos.length !== 0}
 	<section class="flex flex-col gap-4">
 		<h2>Task list</h2>
-		<div class="flex gap-4 flex-wrap">
+		<div class="flex gap-4 flex-wrap mb-2">
 			<details class="relative">
 				<summary class="btn max-w-fit cursor-pointer">Options</summary>
 				<div
