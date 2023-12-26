@@ -10,7 +10,7 @@
 		}
 	],
 	"background_color": "#3367D6",
-	"display_override": ["window-controls-overlay", "fullscreen", "minimal-ui"],
+	"display_override": ["window-controls-overlay", "standalone", "browser"],
 	"display": "standalone",
 	"scope": "/",
 	"theme_color": "#3367D6",
@@ -47,7 +47,7 @@
 		}
 	],
 	"launch_handler": {
-		"client_mode": "auto"
+		"client_mode": ["navigate-existing", "auto"]
 	},
 	"prefer_related_applications": false,
 	"scope_extensions": [{ "origin": "todos.thilohohlt.com" }],

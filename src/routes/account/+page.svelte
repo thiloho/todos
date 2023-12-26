@@ -9,7 +9,7 @@
 
 <h1>Account</h1>
 
-<section class="flex flex-col gap-8" id="overview">
+<section class="flex flex-col gap-4" id="overview">
 	<h2>User information</h2>
 
 	<ul class="flex flex-col gap-2">
@@ -23,7 +23,7 @@
 	</form>
 </section>
 
-<section class="flex flex-col gap-8" id="delete">
+<section class="flex flex-col gap-4" id="delete">
 	<h2>User deletion</h2>
 
 	<details>

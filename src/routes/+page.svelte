@@ -11,47 +11,51 @@
 </script>
 
 <h1>Tasks</h1>
-<details class="relative">
-	<summary class="btn max-w-fit cursor-pointer">New task</summary>
-	<div
-		class="absolute top-12 flex flex-col gap-4 max-w-min z-20 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
-	>
-		<h2>Create a new task</h2>
-		<form action="?/createTodo" method="post" use:enhance class="flex flex-col gap-4">
-			<div class="flex flex-col gap-1 flex-grow">
-				<label for="new-task-title">Task</label>
-				<input
-					name="new-task-title"
-					id="new-task-title"
-					type="text"
-					placeholder="Go out with the dog"
-					class="input-common input-text"
-					maxlength="255"
-					required
-				/>
-			</div>
-			<div class="flex flex-col gap-1">
-				<label for="new-task-due-date">Due date</label>
-				<input name="new-task-due-date" id="new-task-due-date" type="date" class="input-common" />
-			</div>
-			<div class="flex gap-2">
-				<label for="new-task-important-marker">Mark as important</label>
-				<input
-					name="new-task-important-marker"
-					id="new-task-important-marker"
-					type="checkbox"
-					class="scale-125"
-				/>
-			</div>
-			<button type="submit" class="btn w-full">Create</button>
-		</form>
-	</div>
-	{#if form?.createTitleError}
-		<p>
-			<small class="text-red-900 dark:text-red-400">The task title cannot be blank.</small>
-		</p>
-	{/if}
-</details>
+
+<section class="flex flex-col gap-4">
+	<h2>Create task</h2>
+	<details class="relative">
+		<summary class="btn max-w-fit cursor-pointer">New task</summary>
+		<div
+			class="absolute top-12 flex flex-col gap-4 z-20 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
+		>
+			<h2>Create a new task</h2>
+			<form action="?/createTodo" method="post" use:enhance class="flex flex-col gap-4">
+				<div class="flex flex-col gap-1 flex-grow">
+					<label for="new-task-title">Task</label>
+					<input
+						name="new-task-title"
+						id="new-task-title"
+						type="text"
+						placeholder="Go out with the dog"
+						class="input-common input-text"
+						maxlength="255"
+						required
+					/>
+				</div>
+				<div class="flex flex-col gap-1">
+					<label for="new-task-due-date">Due date</label>
+					<input name="new-task-due-date" id="new-task-due-date" type="date" class="input-common" />
+				</div>
+				<div class="flex gap-2">
+					<label for="new-task-important-marker">Mark as important</label>
+					<input
+						name="new-task-important-marker"
+						id="new-task-important-marker"
+						type="checkbox"
+						class="scale-125"
+					/>
+				</div>
+				<button type="submit" class="btn w-full">Create</button>
+			</form>
+		</div>
+		{#if form?.createTitleError}
+			<p>
+				<small class="text-red-900 dark:text-red-400">The task title cannot be blank.</small>
+			</p>
+		{/if}
+	</details>
+</section>
 {#if data.allTodos.length !== 0}
 	<section class="flex flex-col gap-4">
 		<h2>Task list</h2>
@@ -59,7 +63,7 @@
 			<details class="relative">
 				<summary class="btn max-w-fit cursor-pointer">Options</summary>
 				<div
-					class="flex flex-col max-w-min gap-8 p-4 border rounded absolute top-12 z-10 bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
+					class="flex flex-col gap-8 p-4 border rounded absolute top-12 z-10 bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
 				>
 					<form
 						method="post"
@@ -95,11 +99,6 @@
 						</div>
 						<button type="submit" class="btn">Apply</button>
 					</form>
-					{#if data.activeFilter === 'completed' && data.todos.length > 0}
-						<form method="post" action="?/deleteCompletedTodos" class="ms-auto" use:enhance>
-							<button type="submit" class="btn">Delete completed tasks</button>
-						</form>
-					{/if}
 				</div>
 			</details>
 			<search>
@@ -131,6 +130,11 @@
 					</button>
 				</form>
 			</search>
+			{#if data.activeFilter === 'completed' && data.todos.length > 0}
+				<form method="post" action="?/deleteCompletedTodos" class="ms-auto" use:enhance>
+					<button type="submit" class="btn">Delete completed</button>
+				</form>
+			{/if}
 		</div>
 		{#if data.todos.length > 0}
 			{#if data.taskListIsGrouped}

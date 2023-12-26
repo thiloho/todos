@@ -32,38 +32,37 @@
 	}
 </script>
 
-<header class="bg-blue-900 text-white p-4">
+<header class="p-4 sticky top-0 bg-white dark:bg-neutral-900">
 	<div class="max-w-screen-2xl ms-auto me-auto flex items-center gap-4">
-		<p>
-			<strong>
-				<a href="/">Todos</a>
-			</strong>
-		</p>
+		<a href="/" class="flex items-center gap-2">
+			<img src="logo_512.svg" alt="" width="32" height="32" />
+			<p>
+				<strong>Todos</strong>
+			</p>
+		</a>
 		<button
 			title={darkMode ? 'Enable light theme' : 'Enable dark theme'}
 			on:click={toggleDarkMode}
-			class="btn btn-icon bg-blue-950 border border-white dark:border-white dark:bg-blue-950"
+			class="btn btn-icon"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 20 20"
+				viewBox="0 0 16 16"
 				fill="currentColor"
-				class="w-5 h-5 hidden dark:block"
+				class="w-4 h-4 hidden dark:block"
 			>
 				<path
-					d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.061 1.06l1.06 1.06z"
+					d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"
 				/>
 			</svg>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 20 20"
+				viewBox="0 0 16 16"
 				fill="currentColor"
-				class="w-5 h-5 dark:hidden"
+				class="w-4 h-4 dark:hidden"
 			>
 				<path
-					fill-rule="evenodd"
-					d="M7.455 2.004a.75.75 0 01.26.77 7 7 0 009.958 7.967.75.75 0 011.067.853A8.5 8.5 0 116.647 1.921a.75.75 0 01.808.083z"
-					clip-rule="evenodd"
+					d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"
 				/>
 			</svg>
 		</button>
