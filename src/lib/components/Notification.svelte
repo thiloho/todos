@@ -5,15 +5,15 @@
 
 <div
 	class="flex gap-2 items-start max-w-prose p-4 border rounded {type === 'info'
-		? 'border-blue-900 dark:border-blue-400'
-		: 'border-red-900 dark:border-red-400'}"
+		? 'border-blue-700 dark:border-blue-400'
+		: 'border-red-700 dark:border-red-400'}"
 >
 	{#if type === 'info'}
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 16 16"
 			fill="currentColor"
-			class="w-4 h-4 text-blue-900 shrink-0 dark:text-blue-400"
+			class="w-4 h-4 text-blue-700 shrink-0 dark:text-blue-400"
 		>
 			<path
 				fill-rule="evenodd"
@@ -27,7 +27,7 @@
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 16 16"
 			fill="currentColor"
-			class="w-4 h-4 text-red-900 shrink-0 dark:text-red-400"
+			class="w-4 h-4 text-red-700 shrink-0 dark:text-red-400"
 		>
 			<path
 				fill-rule="evenodd"

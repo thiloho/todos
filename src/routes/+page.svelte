@@ -51,7 +51,7 @@
 		</div>
 		{#if form?.createTitleError}
 			<p>
-				<small class="text-red-900 dark:text-red-400">The task title cannot be blank.</small>
+				<small class="text-red-700 dark:text-red-400">The task title cannot be blank.</small>
 			</p>
 		{/if}
 	</details>

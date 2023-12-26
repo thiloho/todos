@@ -27,7 +27,7 @@
 	<h2>User deletion</h2>
 
 	<details>
-		<summary class="btn max-w-fit cursor-pointer text-red-900 dark:text-red-400"
+		<summary class="btn max-w-fit cursor-pointer text-red-700 dark:text-red-400"
 			>Delete account</summary
 		>
 		<div class="flex flex-col gap-4 mt-4">
@@ -37,7 +37,7 @@
 				deleted. You can then create a new account, but your old information cannot be recovered."
 			/>
 			<form method="post" action="?/deleteAccount">
-				<button class="btn font-bold text-red-900 dark:text-red-400"
+				<button class="btn font-bold text-red-700 dark:text-red-400"
 					>Confirm account deletion</button
 				>
 			</form>

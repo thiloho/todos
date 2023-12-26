@@ -25,14 +25,14 @@ CREATE TABLE todo_category (
 );
 
 INSERT INTO todo_category (name, color_light, color_dark) VALUES
-    ('Blue Category', '#1e3a8a', '#60a5fa'),
-    ('Red Category', '#7f1d1d', '#fb7185'),
-    ('Yellow Category', '#78350f', '#fdba74'),
-    ('Green Category', '#14532d', '#4ade80'),
-    ('Purple Category', '#4c1d95', '#c084fc'),
-    ('Orange Category', '#7c2d12', '#fb923c'),
-    ('Pink Category', '#831843', '#f472b6'),
-    ('Gray Category', '#1f2937', '#94a3b8');
+    ('Blue category', '#1d4ed8', '#60a5fa'),
+    ('Red category', '#b91c1c', '#fb7185'),
+    ('Yellow category', '#a16207', '#fdba74'),
+    ('Green category', '#15803d', '#4ade80'),
+    ('Purple category', '#7e22ce', '#c084fc'),
+    ('Orange category', '#c2410c', '#fb923c'),
+    ('Pink category', '#be185d', '#f472b6'),
+    ('Gray category', '#374151', '#94a3b8');
 
 CREATE TABLE user_todo (
     id SERIAL PRIMARY KEY,
