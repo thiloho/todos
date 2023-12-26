@@ -8,60 +8,115 @@
 	export let data: PageData;
 
 	export let form: ActionData;
+
+	const exportTasks = async (event) => {
+		const formData = new FormData(event.target);
+		const format = formData.get('export-tasks-format');
+
+		let exportBlob;
+		let opts;
+
+		switch (format) {
+			case 'json':
+				exportBlob = new Blob([JSON.stringify(data.allTodos, null, 2)], {
+					type: 'text/json;charset=utf-8'
+				});
+
+				opts = {
+					types: [
+						{
+							description: 'Exported tasks | todos.thilohohlt.com',
+							suggestedName: 'exported-task-list.json',
+							accept: { 'text/json': ['.json'] }
+						}
+					]
+				};
+				break;
+		}
+
+		const handle = await (<any>window).showSaveFilePicker(opts);
+		const writable = await handle.createWritable();
+		await writable.write(exportBlob);
+		await writable.close();
+	};
 </script>
 
 <h1>Tasks</h1>
 
 <section class="flex flex-col gap-4">
-	<h2>Create task</h2>
-	<details class="relative">
-		<summary class="btn max-w-fit cursor-pointer">New task</summary>
-		<div
-			class="absolute top-12 flex flex-col gap-4 z-20 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
-		>
-			<h2>Create new task</h2>
-			<form action="?/createTodo" method="post" use:enhance class="flex flex-col gap-4">
-				<div class="flex flex-col gap-1 flex-grow">
-					<label for="new-task-title">Task</label>
-					<input
-						name="new-task-title"
-						id="new-task-title"
-						type="text"
-						placeholder="Go out with the dog"
-						class="input-common input-text"
-						maxlength="255"
-						required
-					/>
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="new-task-due-date">Due date</label>
-					<input name="new-task-due-date" id="new-task-due-date" type="date" class="input-common" />
-				</div>
-				<div class="flex gap-2">
-					<label for="new-task-important-marker">Mark as important</label>
-					<input
-						name="new-task-important-marker"
-						id="new-task-important-marker"
-						type="checkbox"
-						class="scale-125"
-					/>
-				</div>
-				<button type="submit" class="btn w-full">Create</button>
-			</form>
-		</div>
-		{#if form?.createTitleError}
-			<p>
-				<small class="text-red-700 dark:text-red-400">The task title cannot be blank.</small>
-			</p>
-		{/if}
-	</details>
+	<h2>Create and transfer tasks</h2>
+	<div class="flex gap-4">
+		<details class="relative">
+			<summary class="btn max-w-fit cursor-pointer select-none">New task</summary>
+			<div
+				class="absolute top-12 flex flex-col gap-4 z-20 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
+			>
+				<h3>Create new task</h3>
+				<form action="?/createTodo" method="post" use:enhance class="flex flex-col gap-4">
+					<div class="flex flex-col gap-1 flex-grow">
+						<label for="new-task-title">Task</label>
+						<input
+							name="new-task-title"
+							id="new-task-title"
+							type="text"
+							placeholder="Go out with the dog"
+							class="input-common input-text"
+							maxlength="255"
+							required
+						/>
+					</div>
+					<div class="flex flex-col gap-1">
+						<label for="new-task-due-date">Due date</label>
+						<input
+							name="new-task-due-date"
+							id="new-task-due-date"
+							type="date"
+							class="input-common"
+						/>
+					</div>
+					<div class="flex gap-2">
+						<label for="new-task-important-marker">Mark as important</label>
+						<input
+							name="new-task-important-marker"
+							id="new-task-important-marker"
+							type="checkbox"
+							class="scale-125"
+						/>
+					</div>
+					<button type="submit" class="btn">Create</button>
+				</form>
+			</div>
+			{#if form?.createTitleError}
+				<p>
+					<small class="text-red-700 dark:text-red-400">The task title cannot be blank.</small>
+				</p>
+			{/if}
+		</details>
+		<details class="ms-auto relative">
+			<summary class="btn cursor-pointer select-none">Export</summary>
+			<div
+				class="absolute top-12 end-0 flex flex-col gap-4 z-30 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
+			>
+				<h3>Export tasks</h3>
+				<form on:submit={exportTasks} class="flex flex-col gap-4">
+					<div class="flex flex-col gap-1">
+						<label for="export-tasks-format">Format</label>
+						<select name="export-tasks-format" id="export-tasks-format" class="input-common">
+							<option value="json">JSON</option>
+						</select>
+					</div>
+					<button type="submit" class="btn">Export</button>
+				</form>
+			</div>
+		</details>
+	</div>
 </section>
 {#if data.allTodos.length !== 0}
 	<section class="flex flex-col gap-4">
 		<h2>Task list</h2>
 		<div class="flex gap-4 flex-wrap mb-2">
 			<details class="relative">
-				<summary class="btn max-w-fit cursor-pointer">Organise</summary>
+				<summary class="btn max-w-fit cursor-pointer select-none">Organise</summary>
 				<div
 					class="flex flex-col gap-4 p-4 border rounded absolute top-12 z-10 bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
 				>

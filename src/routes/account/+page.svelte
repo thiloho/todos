@@ -27,7 +27,7 @@
 	<h2>User deletion</h2>
 
 	<details>
-		<summary class="btn max-w-fit cursor-pointer text-red-700 dark:text-red-400"
+		<summary class="btn max-w-fit cursor-pointer text-red-700 dark:text-red-400 select-none"
 			>Delete account</summary
 		>
 		<div class="flex flex-col gap-4 mt-4">
