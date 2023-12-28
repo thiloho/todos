@@ -35,7 +35,8 @@
 	<section class="flex flex-col gap-4">
 		<h2>Data Deletion</h2>
 		<p>
-			You can delete your account and associated data through our app or by visiting <a class="underline"
+			You can delete your account and associated data through our app or by visiting <a
+				class="underline"
 				href="https://todos.thilohohlt.com/account#delete"
 				>https://todos.thilohohlt.com/account#delete</a
 			>.
@@ -53,8 +54,9 @@
 	<section class="flex flex-col gap-4">
 		<h2>Contact Us</h2>
 		<p>
-			If you have questions about this policy, contact us at <a class="underline" href="mailto:contact@thilohohlt.com"
-				>contact@thilohohlt.com</a
+			If you have questions about this policy, contact us at <a
+				class="underline"
+				href="mailto:contact@thilohohlt.com">contact@thilohohlt.com</a
 			>.
 		</p>
 	</section>
