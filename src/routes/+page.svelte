@@ -9,35 +9,64 @@
 
 	export let form: ActionData;
 
-	const exportTasks = async (event) => {
-		const formData = new FormData(event.target);
-		const format = formData.get('export-tasks-format');
+	let exportType = 'json';
 
-		let exportBlob;
-		let opts;
+	interface JSONItem {
+		[key: string]: string | number | boolean | null;
+	}
 
-		switch (format) {
-			case 'json':
-				exportBlob = new Blob([JSON.stringify(data.allTodos, null, 2)], {
-					type: 'text/json;charset=utf-8'
-				});
+	const copyExportTasks = async () => {
+		const jsonReplacer = (key: string, value: any) => {
+			if (key === 'user_id' || key === 'category_id') {
+				return undefined;
+			}
+			return value;
+		};
+		const jsonTasks = JSON.stringify(data.allTodos, jsonReplacer, 2);
 
-				opts = {
-					types: [
-						{
-							description: 'Exported tasks | todos.thilohohlt.com',
-							suggestedName: 'exported-task-list.json',
-							accept: { 'text/json': ['.json'] }
-						}
-					]
-				};
-				break;
+		const jsonToCSV = (jsonArray: JSONItem[]) => {
+			const replacer = (_: string, value: any) => (value === null ? '' : value);
+			const header = Object.keys(jsonArray[0]);
+			const csv = jsonArray.map((row) =>
+				header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(',')
+			);
+			csv.unshift(header.join(','));
+			return csv.join('\r\n');
+		};
+
+		const jsonToMarkdown = (jsonArray: JSONItem[]) => {
+			return jsonArray
+				.map((item) => {
+					const checkbox = item.is_completed ? '- [x]' : '- [ ]';
+					return (
+						`${checkbox} **ID:** ${item.id} - **Title:** ${item.title}\n` +
+						`    - **Important:** ${item.is_important ? 'Yes' : 'No'}\n` +
+						`    - **Due date:** ${item.due_date || 'None'}\n` +
+						`    - **Overdue:** ${item.is_overdue ? 'Yes' : 'No'}\n` +
+						`    - **Created at:** ${item.created_at}\n` +
+						`    - **Updated at:** ${item.updated_at}`
+					);
+				})
+				.join('\n\n');
+		};
+
+		try {
+			switch (exportType) {
+				case 'json':
+					await navigator.clipboard.writeText(jsonTasks);
+					break;
+				case 'csv':
+					await navigator.clipboard.writeText(jsonToCSV(JSON.parse(jsonTasks)));
+					break;
+				case 'markdown':
+					await navigator.clipboard.writeText(jsonToMarkdown(JSON.parse(jsonTasks)));
+					break;
+			}
+
+			alert(`Copied tasks in format ${exportType} to clipboard.`);
+		} catch (err) {
+			alert(`Failed to copy: ${err}`);
 		}
-
-		const handle = await (<any>window).showSaveFilePicker(opts);
-		const writable = await handle.createWritable();
-		await writable.write(exportBlob);
-		await writable.close();
 	};
 </script>
 
@@ -95,18 +124,41 @@
 		<details class="ms-auto relative">
 			<summary class="btn cursor-pointer select-none">Export</summary>
 			<div
-				class="absolute top-12 end-0 flex flex-col gap-4 z-30 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
+				class="absolute top-12 max-h-72 overflow-y-auto end-0 flex flex-col gap-4 z-30 p-4 border rounded bg-white border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
 			>
-				<h3>Export tasks</h3>
-				<form on:submit={exportTasks} class="flex flex-col gap-4">
-					<div class="flex flex-col gap-1">
+				<h3>Export all tasks</h3>
+				<div class="flex items-end gap-2">
+					<div class="flex flex-col gap-1 flex-grow">
 						<label for="export-tasks-format">Format</label>
-						<select name="export-tasks-format" id="export-tasks-format" class="input-common">
+						<select
+							name="export-tasks-format"
+							id="export-tasks-format"
+							class="input-common"
+							bind:value={exportType}
+						>
 							<option value="json">JSON</option>
+							<option value="csv">CSV</option>
+							<option value="markdown">Markdown</option>
 						</select>
 					</div>
-					<button type="submit" class="btn">Export</button>
-				</form>
+					<button class="btn btn-icon" title="Copy to clipboard" on:click={copyExportTasks}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							class="w-4 h-4"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M11.986 3H12a2 2 0 0 1 2 2v6a2 2 0 0 1-1.5 1.937v-2.523a2.5 2.5 0 0 0-.732-1.768L8.354 5.232A2.5 2.5 0 0 0 6.586 4.5H4.063A2 2 0 0 1 6 3h.014A2.25 2.25 0 0 1 8.25 1h1.5a2.25 2.25 0 0 1 2.236 2ZM10.5 4v-.75a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75V4h3Z"
+								clip-rule="evenodd"
+							/>
+							<path
+								d="M3 6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-3.586a1 1 0 0 0-.293-.707L7.293 6.293A1 1 0 0 0 6.586 6H3Z"
+							/>
+						</svg>
+					</button>
+				</div>
 			</div>
 		</details>
 	</div>

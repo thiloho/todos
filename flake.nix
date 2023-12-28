@@ -8,8 +8,6 @@
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [
         nodejs_20
-        nodePackages.svelte-language-server
-        vscode-langservers-extracted
         nil
       ];
     };
