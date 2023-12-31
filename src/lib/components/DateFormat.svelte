@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let dateString: string;
 	export let withTime = false;
+	import { getLocalISOString } from '$lib/utilities';
 </script>
 
-<time datetime={new Date(dateString).toISOString()}
+<time datetime={getLocalISOString(new Date(dateString))}
 	>{new Date(dateString).toLocaleDateString('en-US', {
 		weekday: 'short',
 		year: 'numeric',

@@ -4,6 +4,7 @@
 	import OrganizeSelect from '$lib/components/OrganizeSelect.svelte';
 	import TodoList from '$lib/components/TodoList.svelte';
 	import { isEditingItem } from '$lib/stores';
+	import { getLocalISOString } from '$lib/utilities';
 
 	export let data: PageData;
 
@@ -22,7 +23,15 @@
 			}
 			return value;
 		};
-		const jsonTasks = JSON.stringify(data.allTodos, jsonReplacer, 2);
+		const jsonTasks = JSON.stringify(
+			data.allTodos.map((todo) => ({
+				...todo,
+				created_at: getLocalISOString(new Date(todo.created_at)),
+				updated_at: getLocalISOString(new Date(todo.updated_at))
+			})),
+			jsonReplacer,
+			2
+		);
 
 		const jsonToCSV = (jsonArray: JSONItem[]) => {
 			const replacer = (_: string, value: any) => (value === null ? '' : value);

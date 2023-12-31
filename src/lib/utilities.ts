@@ -76,3 +76,7 @@ export const isOverdue = (dueDateString: string | null) => {
 
 	return currentDate > dueDate;
 };
+
+export const getLocalISOString = (date: Date) => {
+	return date.toLocaleString('sv').replace(' ', 'T');
+};
