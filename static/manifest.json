@@ -50,6 +50,12 @@
 		"client_mode": ["navigate-existing", "auto"]
 	},
 	"prefer_related_applications": true,
+	"related_applications": [
+		{
+			"platform": "webapp",
+			"url": "https://todos.thilohohlt.com/manifest.json"
+		}
+	],
 	"scope_extensions": [{ "origin": "todos.thilohohlt.com" }],
 	"edge_side_panel": {
 		"preferred_width": 324
