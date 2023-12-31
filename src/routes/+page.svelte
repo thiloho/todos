@@ -114,12 +114,12 @@
 					</div>
 					<button type="submit" class="btn">Create</button>
 				</form>
+				{#if form?.createTitleError}
+					<p>
+						<small class="text-red-700 dark:text-red-400">The task title cannot be blank.</small>
+					</p>
+				{/if}
 			</div>
-			{#if form?.createTitleError}
-				<p>
-					<small class="text-red-700 dark:text-red-400">The task title cannot be blank.</small>
-				</p>
-			{/if}
 		</details>
 		<details class="ms-auto relative">
 			<summary class="btn cursor-pointer select-none">Export</summary>

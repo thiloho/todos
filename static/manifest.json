@@ -9,11 +9,11 @@
 			"sizes": "512x512"
 		}
 	],
-	"background_color": "#0a0a0a",
+	"background_color": "#171717",
 	"display_override": ["window-controls-overlay", "standalone", "browser"],
 	"display": "standalone",
 	"scope": "/",
-	"theme_color": "#0a0a0a",
+	"theme_color": "#171717",
 	"description": "A simple yet powerful todo application for managing your tasks.",
 	"id": "/?source=pwa",
 	"lang": "en",
@@ -49,7 +49,7 @@
 	"launch_handler": {
 		"client_mode": ["navigate-existing", "auto"]
 	},
-	"prefer_related_applications": false,
+	"prefer_related_applications": true,
 	"scope_extensions": [{ "origin": "todos.thilohohlt.com" }],
 	"edge_side_panel": {
 		"preferred_width": 324
