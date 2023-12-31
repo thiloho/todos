@@ -37,7 +37,7 @@ INSERT INTO todo_category (name, color_light, color_dark) VALUES
 CREATE TABLE user_todo (
     id SERIAL PRIMARY KEY,
     user_id text NOT NULL,
-    title varchar(255) NOT NULL,
+    title text NOT NULL,
     is_completed boolean NOT NULL DEFAULT false,
     is_important boolean NOT NULL DEFAULT false,
     due_date timestamp with time zone,

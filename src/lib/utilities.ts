@@ -76,3 +76,59 @@ export const isOverdue = (dueDateString: string | null) => {
 
 	return currentDate > dueDate;
 };
+
+export const generateAndExportSecretKey = async () => {
+	const key = await window.crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, [
+		'encrypt',
+		'decrypt'
+	]);
+
+	const exportedKey = await window.crypto.subtle.exportKey('raw', key);
+	return window.btoa(String.fromCharCode(...new Uint8Array(exportedKey)));
+};
+
+export const generateKeyHash = async (key: string) => {
+	const encoder = new TextEncoder();
+	const encodedKey = encoder.encode(key);
+
+	const hashBuffer = await window.crypto.subtle.digest('SHA-512', encodedKey);
+	const hashArray = Array.from(new Uint8Array(hashBuffer));
+	const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+
+	return hashHex;
+};
+
+export const importSecretKey = async (base64Key: string) => {
+	const rawKey = Uint8Array.from(atob(base64Key), (c) => c.charCodeAt(0));
+	return await window.crypto.subtle.importKey('raw', rawKey, 'AES-GCM', true, [
+		'encrypt',
+		'decrypt'
+	]);
+};
+
+export const encryptData = async (secretKey: CryptoKey, data: string) => {
+	const encodedData = new TextEncoder().encode(data);
+	const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+	const encryptedData = await window.crypto.subtle.encrypt(
+		{ name: 'AES-GCM', iv },
+		secretKey,
+		encodedData
+	);
+
+	return { encryptedData, iv };
+};
+
+export const decryptData = async (
+	secretKey: CryptoKey,
+	encryptedData: ArrayBuffer,
+	iv: Uint8Array
+) => {
+	const decryptedData = await window.crypto.subtle.decrypt(
+		{ name: 'AES-GCM', iv },
+		secretKey,
+		encryptedData
+	);
+
+	return new TextDecoder().decode(decryptedData);
+};

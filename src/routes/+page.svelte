@@ -68,6 +68,8 @@
 			alert(`Failed to copy: ${err}`);
 		}
 	};
+
+	let newTaskTitle = '';
 </script>
 
 <h1>Tasks</h1>
@@ -82,6 +84,12 @@
 			>
 				<h3>Create new task</h3>
 				<form action="?/createTodo" method="post" use:enhance class="flex flex-col gap-4">
+					<input
+						type="hidden"
+						id="encryptedTaskTitle"
+						name="encryptedTaskTitle"
+						value={newTaskTitle}
+					/>
 					<div class="flex flex-col gap-1 flex-grow">
 						<label for="new-task-title">Task</label>
 						<input
@@ -92,6 +100,7 @@
 							class="input-common input-text"
 							maxlength="255"
 							required
+							bind:value={newTaskTitle}
 						/>
 					</div>
 					<div class="flex flex-col gap-1">
